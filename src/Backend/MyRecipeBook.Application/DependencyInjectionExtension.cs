@@ -10,9 +10,9 @@ public static class DependencyInjectionExtension
 {
     public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
     {
-        AddUseCases(services);
         AddPasswordEncrypter(services, configuration);
         AddAutoMapper(services);
+        AddUseCases(services);
     }
 
     private static void AddAutoMapper(IServiceCollection services)

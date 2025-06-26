@@ -11,13 +11,9 @@ public class DatabaseMigrations
     public static void Migrate(DataBaseType dataBaseType, string connectionString, IServiceProvider serviceProvider)
     {
         if(dataBaseType == DataBaseType.MySql)
-        {
             EnsureDatabaseCreated_MySQl(connectionString);
-        }
         else
-        {
             EnsureDatabaseCreated_SqlServer(connectionString);
-        }
 
         MigrationDatabase(serviceProvider);
     }
@@ -33,7 +29,6 @@ public class DatabaseMigrations
         using var dbConnection = new MySqlConnection(connectionStringBuilder.ConnectionString);
 
         var parameters = new DynamicParameters();
-
         parameters.Add("name", databaseName);
 
         var records = dbConnection.Query("SELECT * FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = @name", parameters);
