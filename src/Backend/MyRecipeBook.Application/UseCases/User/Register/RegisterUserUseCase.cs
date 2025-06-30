@@ -2,6 +2,7 @@
 using MyRecipeBook.Application.Services.Cryptography;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Exceptions;
@@ -59,7 +60,7 @@ public class RegisterUserUseCase : IRegisterUseCase
             result.Errors.Add(new FluentValidation.Results.ValidationFailure(string.Empty, ResourceMessagesException.EMAIL_ALREADY_REGISTERED));
         }
 
-        if(result.IsValid == false)
+        if(result.IsValid.IsFalse())
         {
             var errorMessages = result.Errors.Select(e => e.ErrorMessage).ToList();
 

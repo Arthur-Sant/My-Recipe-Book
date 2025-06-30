@@ -58,7 +58,7 @@ public class RegisterUserUseCaseTest
 
     }
 
-    private  RegisterUserUseCase CreateUseCase(string? email = null)
+    private static RegisterUserUseCase CreateUseCase(string? email = null)
     {
         var unitOfWork = UnitOfWorkBuilder.Build();
         var mapper = MapperBuilder.Build();
