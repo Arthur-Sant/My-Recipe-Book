@@ -3,11 +3,13 @@ using FluentMigrator.Runner;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
 using MyRecipeBook.Domain.Enums;
+using MyRecipeBook.Domain.Extensions;
 using MySqlConnector;
 
 namespace MyRecipeBook.Infrastructure.Migrations;
-public class DatabaseMigrations
+public static class DatabaseMigrations
 {
+
     public static void Migrate(DataBaseType dataBaseType, string connectionString, IServiceProvider serviceProvider)
     {
         if(dataBaseType == DataBaseType.MySql)
@@ -33,7 +35,7 @@ public class DatabaseMigrations
 
         var records = dbConnection.Query("SELECT * FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = @name", parameters);
 
-        if(records.Any() == false)
+        if(records.Any().IsFalse())
         {
             dbConnection.Execute($"CREATE DATABASE {databaseName}");
         }
@@ -55,7 +57,7 @@ public class DatabaseMigrations
 
         var records = dbConnection.Query("SELECT * FROM sys.databases WHERE name = @name", parameters);
 
-        if(records.Any() == false)
+        if(records.Any().IsFalse())
         {
             dbConnection.Execute($"CREATE DATABASE {databaseName}");
         }
