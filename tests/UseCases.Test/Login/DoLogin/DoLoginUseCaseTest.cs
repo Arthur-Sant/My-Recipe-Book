@@ -2,13 +2,13 @@
 using CommonTestUtilities.Entities;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
-using MyRecipeBook.Application.UseCases.User.Login.DoLogin;
+using MyRecipeBook.Application.UseCases.Login.DoLogin;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
 using Shouldly;
 
-namespace UseCases.Test.User.Login.DoLogin;
+namespace UseCases.Test.Login.DoLogin;
 public class DoLoginUseCaseTest
 {
 

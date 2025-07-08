@@ -4,7 +4,7 @@ using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Exceptions.ExceptionsBase;
 
-namespace MyRecipeBook.Application.UseCases.User.Login.DoLogin;
+namespace MyRecipeBook.Application.UseCases.Login.DoLogin;
 public class DoLoginUsecase : IDoLoginUseCase
 {
     private readonly IUserReadOnlyRepository _repository;
