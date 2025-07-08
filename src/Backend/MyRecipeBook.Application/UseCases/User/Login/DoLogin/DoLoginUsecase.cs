@@ -20,12 +20,8 @@ public class DoLoginUsecase : IDoLoginUseCase
     {
         var encriptedPassword = _passwordEncripter.Encrypt(body.Password);
 
-        var user = await _repository.GetByEmailAndPassword(body.Email, encriptedPassword)
-            ?? throw new InvalidLoginException();
+        var user = await _repository.GetByEmailAndPassword(body.Email, encriptedPassword) ?? throw new InvalidLoginException();
 
-        return new ResponseRegisterUserJson
-        {
-            Name = user.Name
-        };
+        return new ResponseRegisterUserJson { Name = user.Name };
     }
 }
