@@ -9,19 +9,18 @@ using System.Globalization;
 
 namespace WebApi.Test.User.Register;
 
-public class RegisterUserTest : IClassFixture<CustomWebApplicationFactory>
+public class RegisterUserTest : MyRecipeBookClassFixture
 {
     private readonly string route = "user";
-    private readonly HttpClient _httpClient;
 
-    public RegisterUserTest(CustomWebApplicationFactory factory) => _httpClient = factory.CreateClient();
+    public RegisterUserTest(CustomWebApplicationFactory factory) : base(factory) { }
 
     [Fact]
     public async Task Success()
     {
         var body = RequestRegisterUserJsonBuilder.Build();
 
-        var response = await _httpClient.PostAsJsonAsync(route, body);
+        var response = await DoPost(route, body);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
         await using var resposeBody = await response.Content.ReadAsStreamAsync();
@@ -41,12 +40,7 @@ public class RegisterUserTest : IClassFixture<CustomWebApplicationFactory>
         var body = RequestRegisterUserJsonBuilder.Build();
         body.Name = string.Empty;
 
-        if(_httpClient.DefaultRequestHeaders.Contains("Accept-Language"))
-            _httpClient.DefaultRequestHeaders.Remove("Accept-Language");
-
-        _httpClient.DefaultRequestHeaders.Add("Accept-Language", culture);
-
-        var response = await _httpClient.PostAsJsonAsync(route, body);
+        var response = await DoPost(route, body, culture);
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
