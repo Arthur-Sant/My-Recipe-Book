@@ -7,22 +7,19 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using WebApi.Test.InlineData;
+using Xunit.Sdk;
 
 namespace WebApi.Test.Login.DoLogin;
 
-public class DoLoginTest : IClassFixture<CustomWebApplicationFactory>
+public class DoLoginTest : MyRecipeBookClassFixture
 {
     private readonly string route = "login",
         _email, 
         _password,
         _name;
 
-    private readonly HttpClient _httpClient;
-
-    public DoLoginTest(CustomWebApplicationFactory factory)
+    public DoLoginTest(CustomWebApplicationFactory factory) : base(factory)
     {
-        _httpClient = factory.CreateClient();
-
         _email = factory.GetEmail();
         _password = factory.GetPassword();
         _name = factory.GetName();
@@ -36,7 +33,7 @@ public class DoLoginTest : IClassFixture<CustomWebApplicationFactory>
             Password = _password
         };
 
-        var response = await _httpClient.PostAsJsonAsync(route, body);
+        var response = await DoPost(route, body);
 
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
@@ -56,12 +53,7 @@ public class DoLoginTest : IClassFixture<CustomWebApplicationFactory>
     {
         var body = RequestLoginJsonBuilder.Build();
 
-        if(_httpClient.DefaultRequestHeaders.Contains("Accept-Language"))
-            _httpClient.DefaultRequestHeaders.Remove("Accept-Language");
-
-        _httpClient.DefaultRequestHeaders.Add("Accept-Language", culture);
-
-        var response = await _httpClient.PostAsJsonAsync(route, body);
+        var response = await DoPost(route, body, culture);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
 
