@@ -45,6 +45,7 @@ public class DoLoginTest : MyRecipeBookClassFixture
             v => v.ShouldBe(_name),
             v => v.ShouldNotBeNullOrWhiteSpace()
             );
+        responseData.RootElement.GetProperty("tokens").GetProperty("accessToken").GetString().ShouldNotBeNullOrEmpty();
     }
 
     [Theory]

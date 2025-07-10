@@ -31,6 +31,7 @@ public class RegisterUserTest : MyRecipeBookClassFixture
             v => v.ShouldBe(body.Name),
             v => v.ShouldNotBeNullOrWhiteSpace()
             );
+        responseData.RootElement.GetProperty("tokens").GetProperty("accessToken").GetString().ShouldNotBeNullOrEmpty();
     }
 
     [Theory]
