@@ -5,47 +5,40 @@ using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.User;
+using MyRecipeBook.Domain.Security.Tokens;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
 
 namespace MyRecipeBook.Application.UseCases.User.Register;
 
-public class RegisterUserUseCase : IRegisterUseCase
+public class RegisterUserUseCase(
+    IUserWriteOnlyRepository _writeonlyRepository,
+    IUserReadOnlyRepository _readonlyRepository,
+    IMapper _mapper,
+    PasswordEncripter _passwordEncripter,
+    IUnityOfWork _unityOfWork,
+    IAcessTokenGenerator _acessTokenGenerator
+        ) : IRegisterUseCase
 {
-    private readonly IUserWriteOnlyRepository _writeonlyRepository;
-    private readonly IUserReadOnlyRepository _readonlyRepository;
-    private readonly IUnityOfWork _unityOfWork;
-    private readonly IMapper _mapper;
-    private readonly PasswordEncripter _passwordEncripter;
-
-    public RegisterUserUseCase(
-        IUserWriteOnlyRepository writeonlyRepository, 
-        IUserReadOnlyRepository readonlyRepository,
-        IMapper mapper,
-        PasswordEncripter passwordEncripter,
-        IUnityOfWork unityOfWork
-        )
-    {
-        _writeonlyRepository = writeonlyRepository;
-        _readonlyRepository = readonlyRepository;
-        _mapper = mapper;
-        _passwordEncripter = passwordEncripter;
-        _unityOfWork = unityOfWork;
-    }
-
     public async Task<ResponseRegisterUserJson> Execute(RequestRegisterUserJson body)
     {
         await Validate(body);
 
         var user = _mapper.Map<Domain.Entities.User>(body);
         user.Password = _passwordEncripter.Encrypt(body.Password);
+        user.UserIdentifier = Guid.NewGuid();
 
         await _writeonlyRepository.Add(user);
 
         await _unityOfWork.Commit();
 
-        return new ResponseRegisterUserJson{
+        return new ResponseRegisterUserJson
+        {
             Name = user.Name,
+            Tokens = new ResponseTokensJson
+            {
+                AccessToken = _acessTokenGenerator.Generate(user.UserIdentifier)
+            }
         };
     }
 
