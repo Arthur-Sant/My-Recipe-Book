@@ -10,6 +10,7 @@ using MyRecipeBook.Infrastructure.DataAccess;
 using MyRecipeBook.Infrastructure.DataAccess.Repositories;
 using MyRecipeBook.Infrastructure.Extensions;
 using MyRecipeBook.Infrastructure.Security.Tokens.Acess.Generator;
+using MyRecipeBook.Infrastructure.Security.Tokens.Acess.Validator;
 using System.Reflection;
 
 namespace MyRecipeBook.Infrastructure;
@@ -100,5 +101,6 @@ public static class DependencyInjectionExtension
         var signinKey = configuration.GetValue<string>("Settings:Jwt:SigninKey");
 
         services.AddScoped<IAcessTokenGenerator>(option => new JwtTokenGenerator(expirationTimeMinutes, signinKey!));    
+        services.AddScoped<IAccessTokenValidator>(option => new JwtTokenValidator(signinKey!));
     }
 }

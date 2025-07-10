@@ -132,10 +132,16 @@
   <data name="NAME_EMPTY" xml:space="preserve">
     <value>O nome não pode estar vazio.</value>
   </data>
+  <data name="NO_TOKEN" xml:space="preserve">
+    <value>Token não fornecido.</value>
+  </data>
   <data name="PASSWORD_LENGTH" xml:space="preserve">
     <value>A senha deve ser maior que 6 caracteres</value>
   </data>
   <data name="UNKNOW_ERROR" xml:space="preserve">
     <value>Erro desconhecido.</value>
+  </data>
+  <data name="USER_WITHOUT_PERMISSION_ACESS_RESOURCE" xml:space="preserve">
+    <value>Usuário sem permissão para acessar o recurso</value>
   </data>
 </root>
