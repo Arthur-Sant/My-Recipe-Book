@@ -6,11 +6,13 @@ using MyRecipeBook.Domain.Enums;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Domain.Security.Tokens;
+using MyRecipeBook.Domain.Services.LoggedUser;
 using MyRecipeBook.Infrastructure.DataAccess;
 using MyRecipeBook.Infrastructure.DataAccess.Repositories;
 using MyRecipeBook.Infrastructure.Extensions;
 using MyRecipeBook.Infrastructure.Security.Tokens.Acess.Generator;
 using MyRecipeBook.Infrastructure.Security.Tokens.Acess.Validator;
+using MyRecipeBook.Infrastructure.Services.LoggedUser;
 using System.Reflection;
 
 namespace MyRecipeBook.Infrastructure;
@@ -20,6 +22,7 @@ public static class DependencyInjectionExtension
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         AddRepositories(services);
+        AddLoggedUser(services);
         AddTokens(services, configuration);
 
         if(configuration.IsUnitTestEnviroment())
@@ -93,6 +96,11 @@ public static class DependencyInjectionExtension
             .WithGlobalConnectionString(connectionString)
             .ScanIn(Assembly.Load("MyRecipeBook.Infrastructure")).For.All();
         });
+    }
+
+    private static void AddLoggedUser(IServiceCollection services)
+    {
+        services.AddScoped<ILoggedUser, LoggedUser>();
     }
 
     private static void AddTokens(IServiceCollection services, IConfiguration configuration)
