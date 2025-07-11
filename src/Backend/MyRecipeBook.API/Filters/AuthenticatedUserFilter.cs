@@ -52,7 +52,7 @@ public class AuthenticatedUserFilter(
     {
         var authentication = context.HttpContext.Request.Headers.Authorization.ToString();
 
-        if(authentication.NotEmpty())
+        if(string.IsNullOrEmpty(authentication))
         {
             throw new MyRecipeBookException(ResourceMessagesException.NO_TOKEN);
         }
