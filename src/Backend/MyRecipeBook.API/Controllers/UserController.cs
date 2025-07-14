@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using MyRecipeBook.API.Attributes;
 using MyRecipeBook.Application.UseCases.User.Profile;
 using MyRecipeBook.Application.UseCases.User.Register;
+using MyRecipeBook.Application.UseCases.User.Update;
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 
@@ -29,5 +31,19 @@ public class UserController : MyRecipeBookBaseController
         var result = await useCase.Execute();
 
         return Ok(result);
+    }
+
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status204NoContent )]
+    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
+    [AuthenticatedUser]
+    public async Task<ActionResult> Update(
+        [FromServices] IUpdateUserUsecase useCase,
+        [FromBody] RequestUpdateUserJson body
+    )
+    {
+        await useCase.Execute(body);
+
+        return NoContent();
     }
 }
