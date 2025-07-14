@@ -6,6 +6,7 @@ using MyRecipeBook.Application.UseCases.User.Register;
 using Microsoft.Extensions.Configuration;
 using MyRecipeBook.Application.UseCases.Login.DoLogin;
 using MyRecipeBook.Application.UseCases.User.Profile;
+using MyRecipeBook.Application.UseCases.User.Update;
 
 namespace MyRecipeBook.Application;
 public static class DependencyInjectionExtension
@@ -30,6 +31,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IRegisterUseCase, RegisterUserUseCase>();
         services.AddScoped<IDoLoginUseCase, DoLoginUsecase>();
         services.AddScoped<IGetUserProfileUseCase, GetUserProfileUseCase>();
+        services.AddScoped<IUpdateUserUsecase, UpdateUserUsecase>();
     }
 
     private static void AddPasswordEncrypter(IServiceCollection services, IConfiguration configuration)
