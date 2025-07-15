@@ -34,6 +34,14 @@ public class MyRecipeBookClassFixture : IClassFixture<CustomWebApplicationFactor
         return await _httpClient.PutAsJsonAsync(route, body);
     }
 
+    protected async Task<HttpResponseMessage> DoPatch(string route, object body, string token, string culture = "en")
+    {
+        ChangeRequestCulture(culture);
+        AuthorizeRequest(token);
+
+        return await _httpClient.PatchAsJsonAsync(route, body);
+    }
+
     protected static async Task<JsonElement.ArrayEnumerator> GetErrosFromResponse(HttpResponseMessage response)
     {
         await using var resposeBody = await response.Content.ReadAsStreamAsync();
