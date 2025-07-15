@@ -1,8 +1,7 @@
 ﻿using FluentValidation;
 using MyRecipeBook.Communication.Requests;
-using MyRecipeBook.Communication;
-using MyRecipeBook.Exceptions;
 using MyRecipeBook.Domain.Extensions;
+using MyRecipeBook.Exceptions;
 
 namespace MyRecipeBook.Application.UseCases.User.Register;
 
