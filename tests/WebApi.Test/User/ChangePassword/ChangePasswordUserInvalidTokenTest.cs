@@ -5,11 +5,11 @@ using System.Globalization;
 using System.Net;
 using WebApi.Test.InlineData;
 
-namespace WebApi.Test.User.Profile;
+namespace WebApi.Test.User.ChangePassword;
 
 public class ChangePasswordUserInvalidTokenTest(CustomWebApplicationFactory factory) : MyRecipeBookClassFixture(factory)
 {
-    private readonly string _route = "user";
+    private readonly string _route = "user/change-password";
 
     [Theory]
     [ClassData(typeof(CultueInlineDataTest))]
@@ -42,7 +42,7 @@ public class ChangePasswordUserInvalidTokenTest(CustomWebApplicationFactory fact
 
     private async void ErrorToken(string token, string expectedMessage, string culture)
     {
-        var response = await DoGet(_route, token, culture);
+        var response = await DoPatch(_route, token, culture);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
 
