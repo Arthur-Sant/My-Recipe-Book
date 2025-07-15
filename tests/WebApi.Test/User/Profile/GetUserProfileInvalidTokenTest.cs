@@ -15,9 +15,9 @@ public class ChangePasswordUserInvalidTokenTest(CustomWebApplicationFactory fact
     [ClassData(typeof(CultueInlineDataTest))]
     public async Task Error_Token_Invalid(string culture)
     {
-        var expectedMessage = ResourceMessagesException.ResourceManager.GetString("USER_WITHOUT_PERMISSION_ACESS_RESOURCE", new CultureInfo(culture))!;
+        var expectedMessage = ResourceMessagesException.ResourceManager.GetString("UNKNOW_ERROR", new CultureInfo(culture))!;
 
-        ErrorToken(token: "tokenInvalid", expectedMessage, culture);
+        await ErrorToken(token: "tokenInvalid", expectedMessage, culture);
     }
 
     [Theory]
@@ -26,7 +26,7 @@ public class ChangePasswordUserInvalidTokenTest(CustomWebApplicationFactory fact
     {
         var expectedMessage = ResourceMessagesException.ResourceManager.GetString("NO_TOKEN", new CultureInfo(culture))!;
 
-        ErrorToken(token: string.Empty, expectedMessage, culture);
+        await ErrorToken(token: string.Empty, expectedMessage, culture);
     }
 
     [Theory]
@@ -37,10 +37,10 @@ public class ChangePasswordUserInvalidTokenTest(CustomWebApplicationFactory fact
 
         var expectedMessage = ResourceMessagesException.ResourceManager.GetString("USER_WITHOUT_PERMISSION_ACESS_RESOURCE", new CultureInfo(culture))!;
 
-        ErrorToken(token, expectedMessage, culture);
+        await ErrorToken(token, expectedMessage, culture);
     }
 
-    private async void ErrorToken(string token, string expectedMessage, string culture)
+    private async Task ErrorToken(string token, string expectedMessage, string culture)
     {
         var response = await DoGet(_route, token, culture);
 

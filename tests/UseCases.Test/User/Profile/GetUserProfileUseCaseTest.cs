@@ -22,7 +22,7 @@ public class GetUserProfileUseCaseTest
         result.Email.ShouldBe(user.Email);
     }
 
-    private static IGetUserProfileUseCase CreateUsecase(MyRecipeBook.Domain.Entities.User user)
+    private static GetUserProfileUseCase CreateUsecase(MyRecipeBook.Domain.Entities.User user)
     {
         var loggedUser = LoggedUserBuilder.Build(user);
         var mapper = MapperBuilder.Build();
