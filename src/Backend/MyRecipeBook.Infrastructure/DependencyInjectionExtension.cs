@@ -5,11 +5,13 @@ using Microsoft.Extensions.DependencyInjection;
 using MyRecipeBook.Domain.Enums;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.User;
+using MyRecipeBook.Domain.Security.Cryptography;
 using MyRecipeBook.Domain.Security.Tokens;
 using MyRecipeBook.Domain.Services.LoggedUser;
 using MyRecipeBook.Infrastructure.DataAccess;
 using MyRecipeBook.Infrastructure.DataAccess.Repositories;
 using MyRecipeBook.Infrastructure.Extensions;
+using MyRecipeBook.Infrastructure.Security.Cryptography;
 using MyRecipeBook.Infrastructure.Security.Tokens.Acess.Generator;
 using MyRecipeBook.Infrastructure.Security.Tokens.Acess.Validator;
 using MyRecipeBook.Infrastructure.Services.LoggedUser;
@@ -22,6 +24,7 @@ public static class DependencyInjectionExtension
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         AddRepositories(services);
+        AddPasswordEncrypter(services, configuration);
         AddLoggedUser(services);
         AddTokens(services, configuration);
 
@@ -111,5 +114,12 @@ public static class DependencyInjectionExtension
 
         services.AddScoped<IAcessTokenGenerator>(option => new JwtTokenGenerator(expirationTimeMinutes, signinKey!));    
         services.AddScoped<IAccessTokenValidator>(option => new JwtTokenValidator(signinKey!));
+    }
+
+    private static void AddPasswordEncrypter(IServiceCollection services, IConfiguration configuration)
+    {
+        var additionalKey = configuration.GetValue<string>("Settings:Password:AdditionalKey");
+
+        services.AddScoped<IPasswordEncripter>(options => new Sha512Encripter(additionalKey!));
     }
 }
