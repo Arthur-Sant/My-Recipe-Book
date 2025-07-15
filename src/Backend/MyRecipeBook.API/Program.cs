@@ -1,13 +1,13 @@
+using Microsoft.OpenApi.Models;
 using MyRecipeBook.API.Convertes;
 using MyRecipeBook.API.Filters;
 using MyRecipeBook.API.Middleware;
+using MyRecipeBook.API.Token;
 using MyRecipeBook.Application;
+using MyRecipeBook.Domain.Security.Tokens;
 using MyRecipeBook.Infrastructure;
 using MyRecipeBook.Infrastructure.Extensions;
 using MyRecipeBook.Infrastructure.Migrations;
-using Microsoft.OpenApi.Models;
-using MyRecipeBook.Domain.Security.Tokens;
-using MyRecipeBook.API.Token;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +20,9 @@ builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)))
 
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    var tokenType = "Bearer";
+
+    options.AddSecurityDefinition(tokenType, new OpenApiSecurityScheme
     {
         Description = @"JWT Authorization header using the Bearer scheme.
                       Enter 'Bearer' [space] and then your token is the text input below.
@@ -28,7 +30,7 @@ builder.Services.AddSwaggerGen(options =>
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type =SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
+        Scheme = tokenType
     });
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -39,10 +41,10 @@ builder.Services.AddSwaggerGen(options =>
                 Reference = new OpenApiReference
                 {
                     Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
+                    Id = tokenType
                 },
                 Scheme = "oauth2",
-                Name = "Bearer",
+                Name = tokenType,
                 In = ParameterLocation.Header
             },
             new List<string>()
