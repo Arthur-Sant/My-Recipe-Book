@@ -1,4 +1,5 @@
 ﻿using CommonTestUtilities.Requests;
+using MyRecipeBook.Application.UseCases.User.ChangePassword;
 using MyRecipeBook.Application.UseCases.User.Register;
 using MyRecipeBook.Exceptions;
 using Shouldly;
@@ -87,6 +88,24 @@ public class RegisterUserValidatorTest
         result.Errors.ShouldSatisfyAllConditions(
             e => e.ShouldHaveSingleItem(),
             e => e.ShouldContain(m => m.ErrorMessage.Equals(ResourceMessagesException.PASSWORD_LENGTH))
+            );
+    }
+
+    [Fact]
+    public void Error_Password_Empty()
+    {
+        var validator = new RegisterUserValidator();
+
+        var body = RequestRegisterUserJsonBuilder.Build();
+        body.Password = string.Empty;
+
+        var result = validator.Validate(body);
+
+        result.IsValid.ShouldBeFalse();
+
+        result.Errors.ShouldSatisfyAllConditions(
+            e => e.ShouldHaveSingleItem(),
+            e => e.ShouldContain(m => m.ErrorMessage.Equals(ResourceMessagesException.PASSWORD_EMPTY))
             );
     }
 }
