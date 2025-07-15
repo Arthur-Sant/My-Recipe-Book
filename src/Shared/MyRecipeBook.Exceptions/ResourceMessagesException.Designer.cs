@@ -61,6 +61,15 @@ namespace MyRecipeBook.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current password is incorrect..
+        /// </summary>
+        public static string CURRENT_PASSWORD_INCORRECT {
+            get {
+                return ResourceManager.GetString("CURRENT_PASSWORD_INCORRECT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The email has already been registered..
         /// </summary>
         public static string EMAIL_ALREADY_REGISTERED {
@@ -111,6 +120,15 @@ namespace MyRecipeBook.Exceptions {
         public static string NO_TOKEN {
             get {
                 return ResourceManager.GetString("NO_TOKEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The passsword cannot be empty.
+        /// </summary>
+        public static string PASSWORD_EMPTY {
+            get {
+                return ResourceManager.GetString("PASSWORD_EMPTY", resourceCulture);
             }
         }
         
