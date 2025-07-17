@@ -1,17 +1,16 @@
 ﻿using CommonTestUtilities.Requests;
 using MyRecipeBook.Exceptions;
 using Shouldly;
+using System.Globalization;
 using System.Net;
-using System.Net.Http.Json;
 using System.Text.Json;
 using WebApi.Test.InlineData;
-using System.Globalization;
 
 namespace WebApi.Test.User.Register;
 
 public class RegisterUserTest : MyRecipeBookClassFixture
 {
-    private readonly string route = "user";
+    private readonly string _route = "user";
 
     public RegisterUserTest(CustomWebApplicationFactory factory) : base(factory) { }
 
@@ -20,7 +19,7 @@ public class RegisterUserTest : MyRecipeBookClassFixture
     {
         var body = RequestRegisterUserJsonBuilder.Build();
 
-        var response = await DoPost(route, body);
+        var response = await DoPost(route: _route, body: body);
 
         response.StatusCode.ShouldBe(HttpStatusCode.Created);
         await using var resposeBody = await response.Content.ReadAsStreamAsync();
@@ -41,7 +40,7 @@ public class RegisterUserTest : MyRecipeBookClassFixture
         var body = RequestRegisterUserJsonBuilder.Build();
         body.Name = string.Empty;
 
-        var response = await DoPost(route, body, culture);
+        var response = await DoPost(route: _route, body: body, culture: culture);
 
         response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
 
