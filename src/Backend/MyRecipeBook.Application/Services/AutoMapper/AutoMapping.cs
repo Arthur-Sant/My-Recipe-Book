@@ -7,11 +7,11 @@ using Sqids;
 namespace MyRecipeBook.Application.Services.AutoMapper;
 public class AutoMapping : Profile
 {
-    private readonly SqidsEncoder<long> _isEncoder;
+    private readonly SqidsEncoder<long> _idEncoder;
 
-    public AutoMapping(SqidsEncoder<long> isEncoder)
+    public AutoMapping(SqidsEncoder<long> idEncoder)
     {
-        _isEncoder = isEncoder;
+        _idEncoder = idEncoder;
 
         RequestToDomain();
         DomainToResponse();
@@ -39,7 +39,12 @@ public class AutoMapping : Profile
     private void DomainToResponse()
     {
         CreateMap<User, ResponseUserProfileJson>();
+
         CreateMap<Recipe, ResponseRegiteredRecipeJson>()
-            .ForMember(dest => dest.Id, source => source.MapFrom(recipe => _isEncoder.Encode(recipe.Id)));
+            .ForMember(dest => dest.Id, source => source.MapFrom(recipe => _idEncoder.Encode(recipe.Id)));
+
+        CreateMap<Domain.Entities.Recipe, ResponseShortRecipeJson>()
+            .ForMember(dest => dest.Id, config => config.MapFrom(source => _idEncoder.Encode(source.Id)))
+            .ForMember(dest => dest.AmountIngredients, config => config.MapFrom(source => source.Ingredients.Count));
     }
 }
