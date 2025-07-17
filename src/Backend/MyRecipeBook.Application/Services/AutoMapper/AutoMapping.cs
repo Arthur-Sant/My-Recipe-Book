@@ -2,12 +2,17 @@
 using MyRecipeBook.Communication.Requests;
 using MyRecipeBook.Communication.Responses;
 using MyRecipeBook.Domain.Entities;
+using Sqids;
 
 namespace MyRecipeBook.Application.Services.AutoMapper;
 public class AutoMapping : Profile
 {
-    public AutoMapping()
+    private readonly SqidsEncoder<long> _isEncoder;
+
+    public AutoMapping(SqidsEncoder<long> isEncoder)
     {
+        _isEncoder = isEncoder;
+
         RequestToDomain();
         DomainToResponse();
     }
@@ -16,10 +21,25 @@ public class AutoMapping : Profile
     {
         CreateMap<RequestRegisterUserJson, User>()
             .ForMember(dest => dest.Password, opt => opt.Ignore());
+
+        CreateMap<RequestRecipeJson, Recipe>()
+            .ForMember(dest => dest.Instructions, opt => opt.Ignore())
+            .ForMember(dest => dest.Ingredients, opt => opt.MapFrom(source => source.Ingredients.Distinct()))
+            .ForMember(dest => dest.DishTypes, opt => opt.MapFrom(source => source.DishTypes.Distinct()));
+
+        CreateMap<string, Ingredient>()
+            .ForMember(dest => dest.Item, opt => opt.MapFrom(source => source));
+
+        CreateMap<Communication.Enums.DishType, DishType>()
+            .ForMember(dest => dest.Type, opt => opt.MapFrom(source => source));
+
+        CreateMap<RequestInstructionJson, Instruction>();
     }
 
     private void DomainToResponse()
     {
         CreateMap<User, ResponseUserProfileJson>();
+        CreateMap<Recipe, ResponseRegiteredRecipeJson>()
+            .ForMember(dest => dest.Id, source => source.MapFrom(recipe => _isEncoder.Encode(recipe.Id)));
     }
 }
