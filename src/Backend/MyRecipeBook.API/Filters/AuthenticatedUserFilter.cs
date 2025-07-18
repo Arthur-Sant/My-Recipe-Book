@@ -41,8 +41,10 @@ public class AuthenticatedUserFilter(
                 TokenIsExpired = true
             });
         }
-        catch
+        catch(Exception exception)
         {
+            Console.WriteLine($"Exception in Authenticate: {exception.Message}");
+
             context.Result = new UnauthorizedObjectResult(new ResponseErrorJson(ResourceMessagesException.UNKNOW_ERROR));
         }
 

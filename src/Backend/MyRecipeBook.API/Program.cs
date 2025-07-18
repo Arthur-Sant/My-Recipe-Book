@@ -22,6 +22,8 @@ builder.Services.AddSwaggerGen(options =>
 {
     var tokenType = "Bearer";
 
+    options.OperationFilter<IdsFilter>();
+
     options.AddSecurityDefinition(tokenType, new OpenApiSecurityScheme
     {
         Description = @"JWT Authorization header using the Bearer scheme.
