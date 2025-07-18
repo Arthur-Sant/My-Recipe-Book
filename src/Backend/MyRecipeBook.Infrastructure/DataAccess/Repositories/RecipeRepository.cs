@@ -7,9 +7,14 @@ using MyRecipeBook.Domain.Repositories.Recipe;
 namespace MyRecipeBook.Infrastructure.DataAccess.Repositories;
 
 public sealed class RecipeRepository(MyRecipeBookDbContext _dbContext) 
-    : IRecipeWriteOnlyRepository, IRecipeReadOnlyRepository
+    : IRecipeWriteOnlyRepository, IRecipeReadOnlyRepository, IRecipeDeleteOnlyRepository
 {
     public async Task Add(Recipe recipe) => await _dbContext.Recipes.AddAsync(recipe);
+
+    public void Delete(long id)
+    {
+        _dbContext.Recipes.Remove(new Recipe { Id = id });
+    }
 
     public async Task<IList<Recipe>> Filter(User user, FilterRecipesDTO filters)
     {
