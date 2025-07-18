@@ -58,4 +58,9 @@ public sealed class RecipeRepository(MyRecipeBookDbContext _dbContext)
             .Include(recipe => recipe.Instructions)
             .FirstOrDefaultAsync(recipe => recipe.Active && recipe.Id.Equals(id) && recipe.UserId.Equals(user.Id));
     }
+
+    public async Task<bool> RecipeExists(long id, long userId)
+    {
+        return await _dbContext.Recipes.AnyAsync(recipe => recipe.Id.Equals(id) && recipe.UserId.Equals(userId));
+    }
 }
