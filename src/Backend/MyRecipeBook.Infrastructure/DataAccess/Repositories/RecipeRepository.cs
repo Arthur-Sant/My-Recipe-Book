@@ -43,4 +43,14 @@ public sealed class RecipeRepository(MyRecipeBookDbContext _dbContext)
 
         return await query.ToListAsync();
     }
+
+    public async Task<Recipe?> GetById(User user, long id)
+    {
+        return await _dbContext.Recipes
+            .AsNoTracking()
+            .Include(recipe => recipe.Ingredients)
+            .Include(recipe => recipe.DishTypes)
+            .Include(recipe => recipe.Instructions)
+            .FirstOrDefaultAsync(recipe => recipe.Active && recipe.Id.Equals(id) && recipe.UserId.Equals(user.Id));
+    }
 }
