@@ -7,13 +7,15 @@ namespace WebApi.Test.Dashboard;
 
 public class GetDashboardTest : MyRecipeBookClassFixture
 {
-    private const string _route = "dashboard";
+    private readonly string _route = "dashboard",
+        _recipeId;
 
     private readonly Guid _userIdentifier;
 
     public GetDashboardTest(CustomWebApplicationFactory factory) : base(factory)
     {
         _userIdentifier = factory.GetUserIdentifier();
+        _recipeId = factory.GetRecipeId();
     }
 
     [Fact]
@@ -30,5 +32,20 @@ public class GetDashboardTest : MyRecipeBookClassFixture
         var responseData = await JsonDocument.ParseAsync(responseBody);
 
         responseData.RootElement.GetProperty("recipes").GetArrayLength().ShouldBeGreaterThan(0);
+    }
+
+    [Fact]
+    public async Task Success_No_Content()
+    {
+        var token = JwtTokenGeneratorBuilder.Build().Generate(_userIdentifier);
+
+        await DoDelete(
+          route: $"recipe/{_recipeId}",
+          token: token
+          ); 
+
+        var response = await DoGet(_route, token);
+
+        response.StatusCode.ShouldBe(HttpStatusCode.NoContent);
     }
 }

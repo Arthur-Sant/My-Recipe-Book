@@ -64,4 +64,20 @@ public class DeleteRecipeTest : MyRecipeBookClassFixture
             v => v.ShouldContain(e => e.GetString()!.Equals(expectedMessage))
             );
     }
+
+    [Theory]
+    [ClassData(typeof(CultueInlineDataTest))]
+    public async Task Error_Recipe_Id_Not_Sent(string culture)
+    {
+        var token = JwtTokenGeneratorBuilder.Build().Generate(_userIdentifier);
+
+        var response = await DoDelete(
+            route: $"{_route}",
+            token: token,
+            culture: culture
+            );
+
+        response.StatusCode.ShouldBe(HttpStatusCode.MethodNotAllowed);
+
+    }
 }
