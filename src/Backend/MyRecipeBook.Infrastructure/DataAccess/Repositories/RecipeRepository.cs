@@ -63,6 +63,18 @@ public sealed class RecipeRepository(MyRecipeBookDbContext _dbContext)
             .FirstOrDefaultAsync(recipe => recipe.Active && recipe.Id.Equals(id) && recipe.UserId.Equals(userId));
     }
 
+    public async Task<IList<Recipe>> GetForDashboard(User user)
+    {
+        return await _dbContext
+           .Recipes
+           .AsNoTracking()
+           .Include(recipe => recipe.Ingredients)
+           .Where(recipe => recipe.Active && recipe.UserId == user.Id)
+           .OrderByDescending(r => r.CreatedAt)
+           .Take(5)
+           .ToListAsync();
+    }
+
     public async Task<bool> RecipeExists(long id, long userId)
     {
         return await _dbContext.Recipes.AnyAsync(recipe => recipe.Id.Equals(id) && recipe.UserId.Equals(userId));
