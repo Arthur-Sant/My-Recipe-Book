@@ -22,7 +22,7 @@ public class FilterRecipeUseCase(
 
         var loggedUser = await _loggedUser.User();
 
-        var filters = new FilterRecipesDTO
+        var filters = new FilterRecipesDto
         {
             RecipeTitle_Ingredient = body.RecipeTitle_Ingredient,
             CookingTimes = body.CookingTimes.Distinct().Select(c => (CookingTime)c).ToList(),

@@ -2,7 +2,7 @@
 
 namespace MyRecipeBook.Domain.DTOs;
 
-public record FilterRecipesDTO
+public record FilterRecipesDto
 {
     public string? RecipeTitle_Ingredient { get; init; }
     public IList<CookingTime> CookingTimes { get; init; } = [];
