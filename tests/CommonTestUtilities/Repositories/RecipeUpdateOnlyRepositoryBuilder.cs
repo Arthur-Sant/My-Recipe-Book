@@ -13,7 +13,7 @@ public class RecipeUpdateOnlyRepositoryBuilder
     public RecipeUpdateOnlyRepositoryBuilder GetById(User user, Recipe? recipe)
     {
         if(recipe is not null)
-            _repository.Setup(repository => repository.GetById(user, recipe.Id)).ReturnsAsync(recipe);
+            _repository.Setup(repository => repository.GetById(recipe.Id, user.Id)).ReturnsAsync(recipe);
 
         return this;
     }
