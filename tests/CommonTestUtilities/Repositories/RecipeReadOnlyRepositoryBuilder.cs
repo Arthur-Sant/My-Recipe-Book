@@ -13,7 +13,7 @@ public class RecipeReadOnlyRepositoryBuilder
 
     public RecipeReadOnlyRepositoryBuilder Filter(User user, IList<Recipe> recipes)
     {
-        _repository.Setup(repository => repository.Filter(user, It.IsAny<FilterRecipesDTO>())).ReturnsAsync(recipes);
+        _repository.Setup(repository => repository.Filter(user, It.IsAny<FilterRecipesDto>())).ReturnsAsync(recipes);
 
         return this;
     }

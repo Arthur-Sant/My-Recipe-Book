@@ -17,7 +17,7 @@ public sealed class RecipeRepository(MyRecipeBookDbContext _dbContext)
         _dbContext.Recipes.Remove(new Recipe { Id = id });
     }
 
-    public async Task<IList<Recipe>> Filter(User user, FilterRecipesDTO filters)
+    public async Task<IList<Recipe>> Filter(User user, FilterRecipesDto filters)
     {
         var query = _dbContext.Recipes
             .AsNoTracking()
