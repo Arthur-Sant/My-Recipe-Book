@@ -1,4 +1,4 @@
-﻿using MyRecipeBook.Communication.Requests;
+﻿using MyRecipeBook.Communication.Requests.User;
 using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.User;

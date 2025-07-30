@@ -37,8 +37,8 @@ public class RegisterUserUseCaseTest
 
         (await act.ShouldThrowAsync<ErrorOnValidationException>())
             .ShouldSatisfyAllConditions(
-            e => e.ErrorMessages.ShouldHaveSingleItem(),
-            e => e.ErrorMessages.ShouldContain(m => m.Equals(ResourceMessagesException.EMAIL_ALREADY_REGISTERED))
+            e => e.GetErrorMessages().ShouldHaveSingleItem(),
+            e => e.GetErrorMessages().ShouldContain(m => m.Equals(ResourceMessagesException.EMAIL_ALREADY_REGISTERED))
             ); 
 
     }
@@ -55,8 +55,8 @@ public class RegisterUserUseCaseTest
 
         (await act.ShouldThrowAsync<ErrorOnValidationException>())
             .ShouldSatisfyAllConditions(
-            e => e.ErrorMessages.ShouldHaveSingleItem(),
-            e => e.ErrorMessages.ShouldContain(m => m.Equals(ResourceMessagesException.NAME_EMPTY))
+            e => e.GetErrorMessages().ShouldHaveSingleItem(),
+            e => e.GetErrorMessages().ShouldContain(m => m.Equals(ResourceMessagesException.NAME_EMPTY))
             );
 
     }

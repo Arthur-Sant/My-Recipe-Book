@@ -1,4 +1,4 @@
-﻿namespace MyRecipeBook.Communication.Requests;
+﻿namespace MyRecipeBook.Communication.Requests.User;
 public class RequestUpdateUserJson
 {
     public string Name { get; set; } = string.Empty;

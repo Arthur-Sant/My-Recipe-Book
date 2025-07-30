@@ -1,6 +1,6 @@
 ﻿using CommonTestUtilities.Requests;
 using CommonTestUtilities.Tokens;
-using MyRecipeBook.Communication.Requests;
+using MyRecipeBook.Communication.Requests.Recipe;
 using MyRecipeBook.Communication.Enums;
 using MyRecipeBook.Exceptions;
 using System.Globalization;

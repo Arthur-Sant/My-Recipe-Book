@@ -1,4 +1,4 @@
-﻿namespace MyRecipeBook.Communication.Requests;
+﻿namespace MyRecipeBook.Communication.Requests.User;
 public class RequestChangePasswordJson
 {
     public string Password { get; set; } = string.Empty;

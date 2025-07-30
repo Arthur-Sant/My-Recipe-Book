@@ -1,6 +1,6 @@
 ﻿using Bogus;
 using MyRecipeBook.Communication.Enums;
-using MyRecipeBook.Communication.Requests;
+using MyRecipeBook.Communication.Requests.Recipe;
 namespace CommonTestUtilities.Requests;
 
 public class RequestFilterRecipeJsonBuilder

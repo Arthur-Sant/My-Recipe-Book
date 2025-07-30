@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
-using MyRecipeBook.Communication.Requests;
-using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Communication.Requests.Recipe;
+using MyRecipeBook.Communication.Requests.User;
+using MyRecipeBook.Communication.Responses.Recipe;
+using MyRecipeBook.Communication.Responses.User;
 using MyRecipeBook.Domain.Entities;
 using Sqids;
 

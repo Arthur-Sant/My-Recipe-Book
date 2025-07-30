@@ -1,4 +1,4 @@
-﻿namespace MyRecipeBook.Communication.Responses;
+﻿namespace MyRecipeBook.Communication.Responses.User;
 public class ResponseUserProfileJson
 {
     public string Name { get; set; } = string.Empty;

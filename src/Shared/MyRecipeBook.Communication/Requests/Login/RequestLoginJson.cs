@@ -1,4 +1,4 @@
-﻿namespace MyRecipeBook.Communication.Requests;
+﻿namespace MyRecipeBook.Communication.Requests.Login;
 public class RequestLoginJson
 {
     public string Email { get; set; } = string.Empty;

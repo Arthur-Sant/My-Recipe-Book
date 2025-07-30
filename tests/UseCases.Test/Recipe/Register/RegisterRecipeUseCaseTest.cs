@@ -43,8 +43,8 @@ public class RegisterRecipeUseCaseTest
 
         (await act.ShouldThrowAsync<ErrorOnValidationException>())
             .ShouldSatisfyAllConditions(
-            e => e.ErrorMessages.ShouldHaveSingleItem(),
-            e => e.ErrorMessages.ShouldContain(m => m.Equals(ResourceMessagesException.RECIPE_TITLE_EMPTY))
+            e => e.GetErrorMessages().ShouldHaveSingleItem(),
+            e => e.GetErrorMessages().ShouldContain(m => m.Equals(ResourceMessagesException.RECIPE_TITLE_EMPTY))
             );
     }
 

@@ -1,5 +1,5 @@
-﻿using MyRecipeBook.Communication.Requests;
-using MyRecipeBook.Communication.Responses;
+﻿using MyRecipeBook.Communication.Requests.User;
+using MyRecipeBook.Communication.Responses.User;
 
 namespace MyRecipeBook.Application.UseCases.User.Register;
 public interface IRegisterUseCase
