@@ -1,4 +1,4 @@
-﻿using MyRecipeBook.Communication.Requests;
+﻿using MyRecipeBook.Communication.Requests.Recipe;
 
 namespace MyRecipeBook.Application.UseCases.Recipe.Update;
 

@@ -5,8 +5,9 @@ using MyRecipeBook.Application.UseCases.User.ChangePassword;
 using MyRecipeBook.Application.UseCases.User.Profile;
 using MyRecipeBook.Application.UseCases.User.Register;
 using MyRecipeBook.Application.UseCases.User.Update;
-using MyRecipeBook.Communication.Requests;
-using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Communication.Requests.User;
+using MyRecipeBook.Communication.Responses.Error;
+using MyRecipeBook.Communication.Responses.User;
 
 namespace MyRecipeBook.API.Controllers;
 

@@ -6,8 +6,9 @@ using MyRecipeBook.Application.UseCases.Recipe.Filter;
 using MyRecipeBook.Application.UseCases.Recipe.GetById;
 using MyRecipeBook.Application.UseCases.Recipe.Register;
 using MyRecipeBook.Application.UseCases.Recipe.Update;
-using MyRecipeBook.Communication.Requests;
-using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Communication.Requests.Recipe;
+using MyRecipeBook.Communication.Responses.Error;
+using MyRecipeBook.Communication.Responses.Recipe;
 
 namespace MyRecipeBook.API.Controllers;
 

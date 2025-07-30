@@ -1,6 +1,6 @@
 ﻿using MyRecipeBook.Communication.Enums;
 
-namespace MyRecipeBook.Communication.Requests;
+namespace MyRecipeBook.Communication.Requests.Recipe;
 
 public class RequestRecipeJson
 {

@@ -1,5 +1,6 @@
-﻿using MyRecipeBook.Communication.Requests;
+﻿using MyRecipeBook.Communication.Requests.Login;
 using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Communication.Responses.User;
 using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Domain.Security.Cryptography;
 using MyRecipeBook.Domain.Security.Tokens;

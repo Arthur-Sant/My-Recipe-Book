@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MyRecipeBook.Application.UseCases.Login.DoLogin;
-using MyRecipeBook.Communication.Requests;
-using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Communication.Requests.Login;
+using MyRecipeBook.Communication.Responses.Error;
+using MyRecipeBook.Communication.Responses.User;
 
 namespace MyRecipeBook.API.Controllers;
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.IdentityModel.Tokens;
 using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Communication.Responses.Error;
 using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Domain.Security.Tokens;
@@ -26,13 +27,14 @@ public class AuthenticatedUserFilter(
 
             if(exists.IsFalse())
             {
-                throw new MyRecipeBookException(ResourceMessagesException.USER_WITHOUT_PERMISSION_ACESS_RESOURCE);
+                throw new UnauthorizedException(ResourceMessagesException.USER_WITHOUT_PERMISSION_ACESS_RESOURCE);
             }
 
         }
         catch(MyRecipeBookException exception)
         {
-            context.Result = new UnauthorizedObjectResult(new ResponseErrorJson(exception.Message));
+            context.HttpContext.Response.StatusCode = (int)exception.GetStatusCode();
+            context.Result = new ObjectResult(new ResponseErrorJson(exception.Message));
         }
         catch(SecurityTokenException)
         {
@@ -56,7 +58,7 @@ public class AuthenticatedUserFilter(
 
         if(string.IsNullOrEmpty(authentication))
         {
-            throw new MyRecipeBookException(ResourceMessagesException.NO_TOKEN);
+            throw new UnauthorizedException(ResourceMessagesException.NO_TOKEN);
         }
 
         return authentication["Bearer ".Length..].Trim();

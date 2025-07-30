@@ -1,7 +1,7 @@
 ﻿using CommonTestUtilities.Requests;
 using CommonTestUtilities.Tokens;
-using Microsoft.AspNetCore.Identity.Data;
-using MyRecipeBook.Communication.Requests;
+using MyRecipeBook.Communication.Requests.User;
+using MyRecipeBook.Communication.Requests.Login;
 using MyRecipeBook.Exceptions;
 using Shouldly;
 using System.Globalization;

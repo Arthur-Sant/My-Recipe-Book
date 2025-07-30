@@ -4,7 +4,7 @@ using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
 using CommonTestUtilities.Tokens;
 using MyRecipeBook.Application.UseCases.Login.DoLogin;
-using MyRecipeBook.Communication.Requests;
+using MyRecipeBook.Communication.Requests.Login;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
 using Shouldly;

@@ -48,8 +48,8 @@ public class FilterRecipeUseCaseTest
 
         (await act.ShouldThrowAsync<ErrorOnValidationException>())
             .ShouldSatisfyAllConditions(
-            e => e.ErrorMessages.ShouldHaveSingleItem(),
-            e => e.ErrorMessages.ShouldContain(m => m.Equals(ResourceMessagesException.COOKING_TIME_NOT_SUPPORTED))
+            e => e.GetErrorMessages().ShouldHaveSingleItem(),
+            e => e.GetErrorMessages().ShouldContain(m => m.Equals(ResourceMessagesException.COOKING_TIME_NOT_SUPPORTED))
             );
 
     }

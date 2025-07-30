@@ -4,7 +4,7 @@ using CommonTestUtilities.LoggedUser;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
 using MyRecipeBook.Application.UseCases.User.ChangePassword;
-using MyRecipeBook.Communication.Requests;
+using MyRecipeBook.Communication.Requests.User;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
 using Shouldly;
@@ -48,8 +48,8 @@ public class ChangePasswordUserUseCaseTest
 
         (await act.ShouldThrowAsync<ErrorOnValidationException>())
             .ShouldSatisfyAllConditions(
-            e => e.ErrorMessages.ShouldHaveSingleItem(),
-            e => e.ErrorMessages.ShouldContain(m => m.Equals(ResourceMessagesException.PASSWORD_EMPTY))
+            e => e.GetErrorMessages().ShouldHaveSingleItem(),
+            e => e.GetErrorMessages().ShouldContain(m => m.Equals(ResourceMessagesException.PASSWORD_EMPTY))
             );
 
         var passwordEncripter = PasswordEncrypterBuilder.Build();
@@ -70,10 +70,10 @@ public class ChangePasswordUserUseCaseTest
 
         (await act.ShouldThrowAsync<ErrorOnValidationException>())
             .ShouldSatisfyAllConditions(
-            e => e.ErrorMessages.ShouldHaveSingleItem(),
-            e => e.ErrorMessages.ShouldContain(m => m.Equals(ResourceMessagesException.CURRENT_PASSWORD_INCORRECT))
+            e => e.GetErrorMessages().ShouldHaveSingleItem(),
+            e => e.GetErrorMessages().ShouldContain(m => m.Equals(ResourceMessagesException.CURRENT_PASSWORD_INCORRECT))
             );
-
+                
         var passwordEncripter = PasswordEncrypterBuilder.Build();
 
         user.Password.ShouldNotBe(passwordEncripter.Encrypt(body.NewPassword));

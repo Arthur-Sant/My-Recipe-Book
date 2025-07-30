@@ -1,6 +1,7 @@
 ﻿using Bogus;
 using MyRecipeBook.Communication.Enums;
 using MyRecipeBook.Communication.Requests;
+using MyRecipeBook.Communication.Requests.Recipe;
 using System.IO.Pipelines;
 
 namespace CommonTestUtilities.Requests;

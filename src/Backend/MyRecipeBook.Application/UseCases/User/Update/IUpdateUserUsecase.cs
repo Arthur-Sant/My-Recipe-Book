@@ -1,4 +1,4 @@
-﻿using MyRecipeBook.Communication.Requests;
+﻿using MyRecipeBook.Communication.Requests.User;
 
 namespace MyRecipeBook.Application.UseCases.User.Update;
 public interface IUpdateUserUsecase
