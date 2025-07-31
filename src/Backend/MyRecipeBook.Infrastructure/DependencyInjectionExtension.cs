@@ -2,12 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Mscc.GenerativeAI;
 using MyRecipeBook.Domain.Enums;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.Recipe;
 using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Domain.Security.Cryptography;
 using MyRecipeBook.Domain.Security.Tokens;
+using MyRecipeBook.Domain.Services.AI;
 using MyRecipeBook.Domain.Services.LoggedUser;
 using MyRecipeBook.Infrastructure.DataAccess;
 using MyRecipeBook.Infrastructure.DataAccess.Repositories;
@@ -16,6 +18,7 @@ using MyRecipeBook.Infrastructure.Security.Cryptography;
 using MyRecipeBook.Infrastructure.Security.Tokens.Acess.Generator;
 using MyRecipeBook.Infrastructure.Security.Tokens.Acess.Validator;
 using MyRecipeBook.Infrastructure.Services.LoggedUser;
+using MyRecipeBook.Infrastructure.Services.OpenAI;
 using System.Reflection;
 
 namespace MyRecipeBook.Infrastructure;
@@ -28,6 +31,7 @@ public static class DependencyInjectionExtension
         AddPasswordEncrypter(services, configuration);
         AddLoggedUser(services);
         AddTokens(services, configuration);
+        AddAI(services, configuration);
 
         if(configuration.IsUnitTestEnviroment())
             return;
@@ -128,5 +132,14 @@ public static class DependencyInjectionExtension
         var additionalKey = configuration.GetValue<string>("Settings:Password:AdditionalKey");
 
         services.AddScoped<IPasswordEncripter>(options => new Sha512Encripter(additionalKey!));
+    }
+
+    private static void AddAI(IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddScoped<IGenerateRecipeAI, AIService>();
+
+        var key = configuration.GetValue<string>("Settings:AI:ApiKey");
+
+        services.AddScoped<IGenerativeAI>(option => new GoogleAI(apiKey: key));
     }
 }
