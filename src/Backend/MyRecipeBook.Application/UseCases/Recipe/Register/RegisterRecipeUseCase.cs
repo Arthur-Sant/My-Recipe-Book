@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
+using MyRecipeBook.Application.Extensions;
 using MyRecipeBook.Communication.Requests.Recipe;
 using MyRecipeBook.Communication.Responses.Recipe;
 using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.Recipe;
 using MyRecipeBook.Domain.Services.LoggedUser;
+using MyRecipeBook.Domain.Services.Storage;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
+using System.IO;
 
 namespace MyRecipeBook.Application.UseCases.Recipe.Register;
 
@@ -14,10 +17,11 @@ public class RegisterRecipeUseCase(
         IRecipeWriteOnlyRepository _repository,
     IMapper _mapper,
     IUnityOfWork _unitOfWork,
-    ILoggedUser _loggedUser
+    ILoggedUser _loggedUser,
+    IStorageService _storageService
     ) : IRegisterRecipeUseCase
 {
-    public async Task<ResponseRegiteredRecipeJson> Execute(RequestRecipeJson body)
+    public async Task<ResponseRegiteredRecipeJson> Execute(RequestRegisterRecipeFormData body)
     {
         Validate(body);
 
@@ -31,6 +35,21 @@ public class RegisterRecipeUseCase(
             instructions[index].Step = index + 1;
 
         recipe.Instructions = _mapper.Map<IList<Domain.Entities.Instruction>>(instructions);
+
+        if(body.Image is not null)
+        {
+
+            var fileStream = body.Image.OpenReadStream();
+
+            var (isValidImage, extension) = fileStream.ValidateAndGetImageExtension();
+
+            if(isValidImage.IsFalse())
+                throw new ErrorOnValidationException([ResourceMessagesException.ONLY_IMAGES_ACCEPTED]);
+
+            recipe.ImageIdentifier = $"{Guid.NewGuid()}{extension}";
+
+            await _storageService.Upload(loggedUser, fileStream, recipe.ImageIdentifier);
+        }
 
         await _repository.Add(recipe);
 
