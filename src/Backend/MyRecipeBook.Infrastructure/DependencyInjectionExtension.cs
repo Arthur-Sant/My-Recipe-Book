@@ -1,4 +1,5 @@
-﻿using FluentMigrator.Runner;
+﻿using Azure.Storage.Blobs;
+using FluentMigrator.Runner;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +12,7 @@ using MyRecipeBook.Domain.Security.Cryptography;
 using MyRecipeBook.Domain.Security.Tokens;
 using MyRecipeBook.Domain.Services.AI;
 using MyRecipeBook.Domain.Services.LoggedUser;
+using MyRecipeBook.Domain.Services.Storage;
 using MyRecipeBook.Infrastructure.DataAccess;
 using MyRecipeBook.Infrastructure.DataAccess.Repositories;
 using MyRecipeBook.Infrastructure.Extensions;
@@ -19,6 +21,7 @@ using MyRecipeBook.Infrastructure.Security.Tokens.Acess.Generator;
 using MyRecipeBook.Infrastructure.Security.Tokens.Acess.Validator;
 using MyRecipeBook.Infrastructure.Services.LoggedUser;
 using MyRecipeBook.Infrastructure.Services.OpenAI;
+using MyRecipeBook.Infrastructure.Services.Storage;
 using System.Reflection;
 
 namespace MyRecipeBook.Infrastructure;
@@ -32,6 +35,7 @@ public static class DependencyInjectionExtension
         AddLoggedUser(services);
         AddTokens(services, configuration);
         AddAI(services, configuration);
+        AddStorage(services, configuration);
 
         if(configuration.IsUnitTestEnviroment())
             return;
@@ -141,5 +145,12 @@ public static class DependencyInjectionExtension
         var key = configuration.GetValue<string>("Settings:AI:ApiKey");
 
         services.AddScoped<IGenerativeAI>(option => new GoogleAI(apiKey: key));
+    }
+
+    private static void AddStorage(IServiceCollection services, IConfiguration configuration)
+    {
+        var connectionString = configuration.GetValue<string>("Settings:Storage:Azure");
+
+        services.AddScoped<IStorageService>(_ => new StorageService(new BlobServiceClient(connectionString)));
     }
 }
