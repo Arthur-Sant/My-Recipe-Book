@@ -6,9 +6,15 @@ namespace MyRecipeBook.Infrastructure.Services.Storage;
 
 public class StorageService(BlobServiceClient _blobServiceClient) : IStorageService
 {
-    public Task Delete(User user, string fileName)
+    public async Task Delete(User user, string fileName)
     {
-        throw new NotImplementedException();
+        var containerClient = _blobServiceClient.GetBlobContainerClient(user.UserIdentifier.ToString());
+
+        var exist = await containerClient.ExistsAsync();
+        if(exist.Value)
+        {
+            await containerClient.DeleteBlobIfExistsAsync(fileName);
+        }
     }
 
     public Task DeleteContainer(Guid userIdentifier)
