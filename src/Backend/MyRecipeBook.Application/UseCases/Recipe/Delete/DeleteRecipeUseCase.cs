@@ -3,6 +3,7 @@ using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.Recipe;
 using MyRecipeBook.Domain.Services.LoggedUser;
+using MyRecipeBook.Domain.Services.Storage;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
 
@@ -12,17 +13,21 @@ public class DeleteRecipeUseCase(
     ILoggedUser _loggedUser,
     IRecipeReadOnlyRepository _repositoryRead,
     IRecipeDeleteOnlyRepository _repositoryDelete,
-    IUnityOfWork _unitOfWork
+    IUnityOfWork _unitOfWork,
+    IStorageService _storageService
     ) : IDeleteRecipeUseCase
 {
     public async Task Execute(long id)
     {
         var loggedUser = await _loggedUser.User();
 
-        var recipeExist = await _repositoryRead.RecipeExists(id, loggedUser.Id);
+        var recipe = await _repositoryRead.GetById(loggedUser, id);
 
-        if(recipeExist.IsFalse())
+        if(recipe is null)
             throw new NotFoundException(ResourceMessagesException.RECIPE_NOT_FOUND);
+
+        if(recipe.ImageIdentifier.NotEmpty())
+            await _storageService.Delete(loggedUser, recipe.ImageIdentifier);
 
         _repositoryDelete.Delete(id);
 
