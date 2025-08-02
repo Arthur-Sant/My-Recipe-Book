@@ -1,6 +1,9 @@
 ﻿using Azure.Storage.Blobs;
+using Azure.Storage.Sas;
 using MyRecipeBook.Domain.Entities;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Services.Storage;
+using MyRecipeBook.Domain.ValueObjects;
 
 namespace MyRecipeBook.Infrastructure.Services.Storage;
 
@@ -16,9 +19,38 @@ public class StorageService(BlobServiceClient _blobServiceClient) : IStorageServ
         throw new NotImplementedException();
     }
 
-    public Task<string> GetFileUrl(User user, string fileName)
+    public async Task<string> GetFileUrl(User user, string fileName)
     {
-        throw new NotImplementedException();
+        var containerName = user.UserIdentifier.ToString();
+
+        var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+
+        var exist = await containerClient.ExistsAsync();
+        if(exist.Value.IsFalse())
+        {
+            return string.Empty;
+        }
+
+        var blobClient = containerClient.GetBlobClient(fileName);
+
+        exist = await blobClient.ExistsAsync();
+        if(exist.Value)
+        {
+            var sasBuilder = new BlobSasBuilder
+            {
+                BlobContainerName = containerName,
+                BlobName = fileName,
+                Resource = "b",
+                ExpiresOn = DateTimeOffset.UtcNow.AddMinutes(MyRecipeBookRuleConstants.MAXIMUM_IMAGE_URL_LIFETIMR_IN_MINUTES)
+            };
+
+            sasBuilder.SetPermissions(BlobSasPermissions.Read);
+
+            return blobClient.GenerateSasUri(sasBuilder).ToString();
+        }
+
+        return string.Empty;
+
     }
 
     public async Task Upload(User user, Stream file, string fileName)
