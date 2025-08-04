@@ -1,7 +1,9 @@
 ﻿using CommonTestUtilities.Entities;
 using CommonTestUtilities.LoggedUser;
 using CommonTestUtilities.Repositories;
+using CommonTestUtilities.Storage;
 using MyRecipeBook.Application.UseCases.Recipe.Delete;
+using MyRecipeBook.Domain.Entities;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
 using Shouldly;
@@ -43,18 +45,17 @@ public class DeleteRecipeUseCaseTest
         MyRecipeBook.Domain.Entities.Recipe? recipe = null)
     {
         var loggedUser = LoggedUserBuilder.Build(user);
-        var repositoryRead = new RecipeReadOnlyRepositoryBuilder();
         var repositoryDelete = RecipeDeleteOnlyRepositoryBuilder.Build();
         var unitOfWork = UnitOfWorkBuilder.Build();
-
-        if(recipe is not null)
-            repositoryRead.RecipeExists(id: recipe.Id, userId: user.Id);
+        var storage = new StorageServiceBuilder().GetFileUrl(user, recipe?.ImageIdentifier).Build();
+        var repositoryRead = new RecipeReadOnlyRepositoryBuilder().GetById(user, recipe).Build();
 
         return new DeleteRecipeUseCase(
             loggedUser, 
-            repositoryRead.Build(), 
+            repositoryRead, 
             repositoryDelete, 
-            unitOfWork
+            unitOfWork,
+            storage
             );
     }
 }

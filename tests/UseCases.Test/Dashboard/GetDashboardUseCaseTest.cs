@@ -2,6 +2,7 @@
 using CommonTestUtilities.LoggedUser;
 using CommonTestUtilities.Mapper;
 using CommonTestUtilities.Repositories;
+using CommonTestUtilities.Storage;
 using MyRecipeBook.Application.UseCases.Dashboard;
 using Shouldly;
 
@@ -29,6 +30,7 @@ public class GetDashboardUseCaseTest
                 recipe.Id.ShouldNotBeNullOrWhiteSpace();
                 recipe.Title.ShouldNotBeNullOrWhiteSpace();
                 recipe.AmountIngredients.ShouldBeGreaterThan(0);
+                recipe.ImageUrl.ShouldNotBeNullOrWhiteSpace();
             })
         ); 
     }
@@ -40,7 +42,8 @@ public class GetDashboardUseCaseTest
         var mapper = MapperBuilder.Build();
         var loggedUser = LoggedUserBuilder.Build(user);
         var repository = new RecipeReadOnlyRepositoryBuilder().GetForDashboard(user, recipes).Build();
+        var storage = new StorageServiceBuilder().GetFileUrl(user, recipes).Build();
 
-        return new GetDashboardUseCase(repository, mapper, loggedUser);
+        return new GetDashboardUseCase(repository, mapper, loggedUser, storage);
     }
 }
