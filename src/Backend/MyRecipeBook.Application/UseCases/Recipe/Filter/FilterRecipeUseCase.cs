@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MyRecipeBook.Application.Extensions;
 using MyRecipeBook.Communication.Requests.Recipe;
 using MyRecipeBook.Communication.Responses.Recipe;
 using MyRecipeBook.Domain.DTOs;
@@ -6,6 +7,7 @@ using MyRecipeBook.Domain.Enums;
 using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories.Recipe;
 using MyRecipeBook.Domain.Services.LoggedUser;
+using MyRecipeBook.Domain.Services.Storage;
 using MyRecipeBook.Exceptions.ExceptionsBase;
 
 namespace MyRecipeBook.Application.UseCases.Recipe.Filter;
@@ -13,7 +15,8 @@ namespace MyRecipeBook.Application.UseCases.Recipe.Filter;
 public class FilterRecipeUseCase(
     IMapper _mapper,
     ILoggedUser _loggedUser,
-    IRecipeReadOnlyRepository _repository
+    IRecipeReadOnlyRepository _repository,
+    IStorageService _storageService
     ) : IFilterRecipeUseCase
 {
     public async Task<ResponseRecipesJson> Execute(RequestFilterRecipeJson body)
@@ -34,7 +37,7 @@ public class FilterRecipeUseCase(
 
         return new ResponseRecipesJson
         {
-            Recipes = _mapper.Map<List<ResponseShortRecipeJson>>(recipes)
+            Recipes = await recipes.MapToShortRecipeJson(loggedUser, _storageService, _mapper)
         };
     }
 
