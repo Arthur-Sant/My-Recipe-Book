@@ -8,7 +8,7 @@ using WebApi.Test.InlineData;
 
 namespace WebApi.Test.Recipe.Generate;
 
-public class GenerateRecipeInvalidTokenTest(CustomWebApplicationFactory factory) : MyRecipeBookClassFixture(factory), 
+public class GenerateRecipeInvalidTokenTest(CustomWebApplicationFactory factory) : MyRecipeBookClassFixture(factory) 
 {
     private readonly string _route = "recipe/generate";
 

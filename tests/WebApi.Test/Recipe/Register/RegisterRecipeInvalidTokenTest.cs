@@ -43,9 +43,9 @@ public class RegisterRecipeInvalidTokenTest(CustomWebApplicationFactory factory)
 
     private async Task ErrorToken(string token, string expectedMessage, string culture)
     {
-        var body = RequestRecipeJsonBuilder.Build();
+        var body = RequestRegisterRecipeFormDataBuilder.Build();
 
-        var response = await DoPost(
+        var response = await DoPostFormData(
             route: _route, 
             body: body, 
             token: token, 

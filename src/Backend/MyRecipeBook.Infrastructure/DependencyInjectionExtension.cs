@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Mscc.GenerativeAI;
 using MyRecipeBook.Domain.Enums;
+using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories;
 using MyRecipeBook.Domain.Repositories.Recipe;
 using MyRecipeBook.Domain.Repositories.User;
@@ -151,6 +152,9 @@ public static class DependencyInjectionExtension
     {
         var connectionString = configuration.GetValue<string>("Settings:Storage:Azure");
 
-        services.AddScoped<IStorageService>(_ => new StorageService(new BlobServiceClient(connectionString)));
+        if(connectionString.NotEmpty())
+        {
+            services.AddScoped<IStorageService>(_ => new StorageService(new BlobServiceClient(connectionString)));
+        }
     }
 }

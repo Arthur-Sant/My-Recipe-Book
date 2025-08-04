@@ -22,11 +22,11 @@ public class RegisterRecipeTest : MyRecipeBookClassFixture
     [Fact]
     public async Task Success()
     {
-        var body = RequestRecipeJsonBuilder.Build();
+        var body = RequestRegisterRecipeFormDataBuilder.Build();
 
         var token = JwtTokenGeneratorBuilder.Build().Generate(_userIdentifier);
 
-        var response = await DoPost(
+        var response = await DoPostFormData(
             route: _route, 
             body: body, 
             token: token
@@ -46,12 +46,12 @@ public class RegisterRecipeTest : MyRecipeBookClassFixture
     [ClassData(typeof(CultueInlineDataTest))]
     public async Task Error_Title_Empty(string culture)
     {
-        var body = RequestRecipeJsonBuilder.Build();
+        var body = RequestRegisterRecipeFormDataBuilder.Build();
         body.Title = string.Empty;
 
         var token = JwtTokenGeneratorBuilder.Build().Generate(_userIdentifier);
 
-        var response = await DoPost(
+        var response = await DoPostFormData(
             route: _route,
             body: body,
             token: token,
