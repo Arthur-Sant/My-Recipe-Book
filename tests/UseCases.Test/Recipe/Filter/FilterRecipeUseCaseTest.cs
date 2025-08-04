@@ -3,6 +3,7 @@ using CommonTestUtilities.LoggedUser;
 using CommonTestUtilities.Mapper;
 using CommonTestUtilities.Repositories;
 using CommonTestUtilities.Requests;
+using CommonTestUtilities.Storage;
 using MyRecipeBook.Application.UseCases.Recipe.Filter;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
@@ -61,7 +62,8 @@ public class FilterRecipeUseCaseTest
         var mapper = MapperBuilder.Build();
         var loggedUser = LoggedUserBuilder.Build(user);
         var repository = new RecipeReadOnlyRepositoryBuilder().Filter(user, recipes).Build();
+        var storage = new StorageServiceBuilder().GetFileUrl(user, recipes).Build();
 
-        return new FilterRecipeUseCase(mapper, loggedUser, repository);
+        return new FilterRecipeUseCase(mapper, loggedUser, repository, storage);
     }
 }

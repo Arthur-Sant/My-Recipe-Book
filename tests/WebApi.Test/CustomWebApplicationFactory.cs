@@ -1,5 +1,6 @@
 ﻿using CommonTestUtilities.Entities;
 using CommonTestUtilities.IdEncripter;
+using CommonTestUtilities.Storage;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,9 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
                     services.Remove(descriptor);
 
                 var provider = services.AddEntityFrameworkInMemoryDatabase().BuildServiceProvider();
+
+                var storageService = new StorageServiceBuilder().Build();
+                services.AddScoped(option => storageService);
 
                 services.AddDbContext<MyRecipeBookDbContext>(options =>
                 {

@@ -9,7 +9,6 @@ using MyRecipeBook.Domain.Services.LoggedUser;
 using MyRecipeBook.Domain.Services.Storage;
 using MyRecipeBook.Exceptions;
 using MyRecipeBook.Exceptions.ExceptionsBase;
-using System.IO;
 
 namespace MyRecipeBook.Application.UseCases.Recipe.Register;
 
@@ -44,7 +43,9 @@ public class RegisterRecipeUseCase(
             var (isValidImage, extension) = fileStream.ValidateAndGetImageExtension();
 
             if(isValidImage.IsFalse())
+            {
                 throw new ErrorOnValidationException([ResourceMessagesException.ONLY_IMAGES_ACCEPTED]);
+            }
 
             recipe.ImageIdentifier = $"{Guid.NewGuid()}{extension}";
 
