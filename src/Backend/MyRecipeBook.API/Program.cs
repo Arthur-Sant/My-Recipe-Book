@@ -1,4 +1,7 @@
+using AutoMapper.Configuration.Annotations;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MyRecipeBook.API.BackgroundServices;
 using MyRecipeBook.API.Convertes;
 using MyRecipeBook.API.Filters;
 using MyRecipeBook.API.Middleware;
@@ -64,6 +67,10 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
+builder.Services.AddHostedService<DeleteUserService>();
+
+AddGoogleAuthentication();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -96,6 +103,12 @@ void MigrateDatabase()
     var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
 
     DatabaseMigrations.Migrate(databaseType, connectionString, serviceScope.ServiceProvider);
+}
+
+void AddGoogleAuthentication()
+{
+    var clienteId = builder.Configuration.GetValue<string>("Settings:Google:ClienteId");
+    var CientSecret = builder.Configuration.GetValue<string>("Settings:Google:CientSecret");
 }
 
 public partial class Program {
