@@ -5,10 +5,23 @@ using MyRecipeBook.Domain.Repositories.User;
 namespace MyRecipeBook.Infrastructure.DataAccess.Repositories;
 public class UserRepository(
     MyRecipeBookDbContext _dbContext
-    ) : IUserWriteOnlyRepository, IUserReadOnlyRepository, IUserUpdateOnlyRepository
+    ) : IUserWriteOnlyRepository, IUserReadOnlyRepository, IUserUpdateOnlyRepository, IUserDeleteOnlyRepository
 {
 
     public async Task Add(User user) => await _dbContext.Users.AddAsync(user);
+
+    public async Task DeleteAccount(Guid userIdentifier)
+    {
+        var user = await _dbContext.Users.FirstOrDefaultAsync(user => user.UserIdentifier == userIdentifier);
+        if(user is null)
+            return;
+
+        var recipes = _dbContext.Recipes.Where(recipe => recipe.UserId == user.Id);
+
+        _dbContext.Recipes.RemoveRange(recipes);
+
+        _dbContext.Users.Remove(user);
+    }
 
     public async Task<bool> ExistActiveUserWithEmail(string email) => await _dbContext.Users.AnyAsync(user => user.Email.Equals(email) && user.Active);
 
