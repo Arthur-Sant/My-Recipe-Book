@@ -20,9 +20,12 @@ public class StorageService(BlobServiceClient _blobServiceClient) : IStorageServ
         }
     }
 
-    public Task DeleteContainer(Guid userIdentifier)
+    public async Task DeleteContainer(Guid userIdentifier)
     {
-        throw new NotImplementedException();
+        var containerClient = _blobServiceClient.GetBlobContainerClient(userIdentifier.ToString());
+
+        await containerClient.DeleteIfExistsAsync();
+
     }
 
     public async Task<string> GetFileUrl(User user, string fileName)

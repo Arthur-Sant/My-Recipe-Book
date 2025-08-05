@@ -1,4 +1,5 @@
-﻿using Azure.Storage.Blobs;
+﻿using Azure.Messaging.ServiceBus;
+using Azure.Storage.Blobs;
 using FluentMigrator.Runner;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +14,7 @@ using MyRecipeBook.Domain.Security.Cryptography;
 using MyRecipeBook.Domain.Security.Tokens;
 using MyRecipeBook.Domain.Services.AI;
 using MyRecipeBook.Domain.Services.LoggedUser;
+using MyRecipeBook.Domain.Services.ServiceBus;
 using MyRecipeBook.Domain.Services.Storage;
 using MyRecipeBook.Infrastructure.DataAccess;
 using MyRecipeBook.Infrastructure.DataAccess.Repositories;
@@ -22,6 +24,7 @@ using MyRecipeBook.Infrastructure.Security.Tokens.Acess.Generator;
 using MyRecipeBook.Infrastructure.Security.Tokens.Acess.Validator;
 using MyRecipeBook.Infrastructure.Services.LoggedUser;
 using MyRecipeBook.Infrastructure.Services.OpenAI;
+using MyRecipeBook.Infrastructure.Services.ServiceBus;
 using MyRecipeBook.Infrastructure.Services.Storage;
 using System.Reflection;
 
@@ -37,6 +40,7 @@ public static class DependencyInjectionExtension
         AddTokens(services, configuration);
         AddAI(services, configuration);
         AddStorage(services, configuration);
+        AddServiceBus(services, configuration);
 
         if(configuration.IsUnitTestEnviroment())
             return;
@@ -85,6 +89,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IUserReadOnlyRepository, UserRepository>();
         services.AddScoped<IUserWriteOnlyRepository, UserRepository>();
         services.AddScoped<IUserUpdateOnlyRepository, UserRepository>();
+        services.AddScoped<IUserDeleteOnlyRepository, UserRepository>();
 
         services.AddScoped<IRecipeWriteOnlyRepository, RecipeRepository>();
         services.AddScoped<IRecipeReadOnlyRepository, RecipeRepository>();
@@ -143,7 +148,7 @@ public static class DependencyInjectionExtension
     {
         services.AddScoped<IGenerateRecipeAI, AIService>();
 
-        var key = configuration.GetValue<string>("Settings:AI:ApiKey");
+        var key = configuration.GetValue<string>("Settings:Google:AI:ApiKey");
 
         services.AddScoped<IGenerativeAI>(option => new GoogleAI(apiKey: key));
     }
@@ -157,4 +162,32 @@ public static class DependencyInjectionExtension
             services.AddScoped<IStorageService>(_ => new StorageService(new BlobServiceClient(connectionString)));
         }
     }
+
+    private static void AddServiceBus(IServiceCollection services, IConfiguration configuration)
+    {
+        var connectionString = configuration.GetValue<string>("Settings:ServiceBus:DeleteUserAccount");
+
+        if(string.IsNullOrWhiteSpace(connectionString))
+            return;
+
+        var client = new ServiceBusClient(connectionString, new ServiceBusClientOptions
+        {
+            TransportType = ServiceBusTransportType.AmqpWebSockets
+        });
+
+        var queueName = "user";
+
+        var deleteQueue = new DeleteUserQueue(client.CreateSender(queueName));
+
+        var deleteUserProcessor = new DeleteUserProcessor(client.CreateProcessor(queueName, new ServiceBusProcessorOptions
+        {
+            MaxConcurrentCalls = 1
+        }));
+
+        services.AddSingleton(deleteUserProcessor);
+
+        services.AddScoped<IDeleteUserQueue>(_ => deleteQueue);
+    }
+
+
 }
