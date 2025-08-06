@@ -9,7 +9,7 @@ using MyRecipeBook.Domain.Security.Tokens;
 public class JwtTokenGenerator(
     uint _expirationTimeMinutes,
     string _signinKey
-    ) : JwtTokenHandler, IAcessTokenGenerator
+    ) : JwtTokenHandler, IAccessTokenGenerator
 {
 
     public string Generate(Guid userIdentifier)
