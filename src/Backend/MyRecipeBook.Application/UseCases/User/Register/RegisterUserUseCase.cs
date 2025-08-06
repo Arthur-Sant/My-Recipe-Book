@@ -18,7 +18,7 @@ public class RegisterUserUseCase(
     IMapper _mapper,
     IPasswordEncripter _passwordEncripter,
     IUnityOfWork _unityOfWork,
-    IAcessTokenGenerator _acessTokenGenerator
+    IAccessTokenGenerator _acessTokenGenerator
         ) : IRegisterUseCase
 {
     public async Task<ResponseRegisterUserJson> Execute(RequestRegisterUserJson body)
