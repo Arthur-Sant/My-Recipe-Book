@@ -1,6 +1,6 @@
 ﻿namespace MyRecipeBook.Domain.Security.Tokens;
 
-public interface IAcessTokenGenerator
+public interface IAccessTokenGenerator
 {
     public string Generate(Guid userIdentifier);
 }

@@ -10,7 +10,7 @@ namespace MyRecipeBook.Application.UseCases.Login.DoLogin;
 public class DoLoginUsecase(
     IUserReadOnlyRepository _repository, 
     IPasswordEncripter _passwordEncripter, 
-    IAcessTokenGenerator _acessTokenGenerator
+    IAccessTokenGenerator _acessTokenGenerator
     ) : IDoLoginUseCase
 {
 

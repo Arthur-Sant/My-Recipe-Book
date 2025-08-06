@@ -27,6 +27,13 @@ public class UserRepository(
 
     public async Task<bool> ExistActiveUserWithIdentifier(Guid userIdentifier) => await _dbContext.Users.AnyAsync(user => user.UserIdentifier.Equals(userIdentifier) && user.Active);
 
+    public async Task<User?> GetByEmail(string email)
+    {
+        return await _dbContext.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(user => user.Active && user.Email.Equals(email));
+    }
+
     public async Task<User?> GetByEmailAndPassword(string email, string password)
     {
         return await _dbContext.Users
