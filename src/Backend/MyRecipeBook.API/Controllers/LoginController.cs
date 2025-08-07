@@ -45,17 +45,20 @@ public class LoginController : MyRecipeBookBaseController
         {
             var dominiosPermitidos = new[] { "/dashboard", "/perfil", "/app" };
 
-            if(!dominiosPermitidos.Any(url => returnUrl.ToLower().EndsWith(url)))
-                return BadRequest(ResourceMessagesException.INVALID_URL);
+            if(dominiosPermitidos.Any(url => returnUrl.ToLower().EndsWith(url)))
+            {
+            
+                var claims = authenticate.Principal!.Identities.First().Claims;
+            
+                var name = claims.First(c => c.Type == ClaimTypes.Name).Value;            
+                var email = claims.First(c => c.Type == ClaimTypes.Email).Value;
 
-            var claims = authenticate.Principal!.Identities.First().Claims;
-
-            var name = claims.First(c => c.Type == ClaimTypes.Name).Value;
-            var email = claims.First(c => c.Type == ClaimTypes.Email).Value;
-
-            var token = await useCase.Execute(name, email);
-
-            return Redirect($"{returnUrl}/{token}");
+                var token = await useCase.Execute(name, email);
+            
+                return Redirect($"{returnUrl}/{token}");
+            }
+                
+            return BadRequest(ResourceMessagesException.INVALID_URL);
         }
     }
 

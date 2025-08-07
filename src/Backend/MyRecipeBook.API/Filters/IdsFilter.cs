@@ -27,7 +27,7 @@ public class IdsFilter : IOperationFilter
         {
             foreach(var property in schema.Properties)
             {
-                if(encryptedIds.TryGetValue(property.Key, out var apiParameter))
+                if(encryptedIds.TryGetValue(property.Key, out var _))
                 {
                     property.Value.Format = string.Empty;
                     property.Value.Type = "string";
