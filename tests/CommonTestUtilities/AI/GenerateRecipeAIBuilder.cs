@@ -6,7 +6,7 @@ namespace CommonTestUtilities.AI;
 
 public class GenerateRecipeAIBuilder
 {
-    public static IGenerateRecipeAI Build(GeneratedRecipeDTO dto)
+    public static IGenerateRecipeAI Build(GeneratedRecipeDto dto)
     {
         var mock = new Mock<IGenerateRecipeAI>();
 
