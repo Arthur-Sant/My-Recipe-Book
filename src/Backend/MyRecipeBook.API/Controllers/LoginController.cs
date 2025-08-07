@@ -16,6 +16,8 @@ namespace MyRecipeBook.API.Controllers;
 
 public class LoginController : MyRecipeBookBaseController
 {
+    private readonly string[] allowedUrls = ["/dashboard", "/perfil", "/app"];
+
     [HttpPost]
     [ProducesResponseType(typeof(ResponseRegisterUserJson), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status401Unauthorized)]
@@ -43,9 +45,7 @@ public class LoginController : MyRecipeBookBaseController
         }
         else
         {
-            var dominiosPermitidos = new[] { "/dashboard", "/perfil", "/app" };
-
-            if(dominiosPermitidos.Any(url => returnUrl.ToLower().EndsWith(url)))
+            if(allowedUrls.Contains(returnUrl))
             {
             
                 var claims = authenticate.Principal!.Identities.First().Claims;
