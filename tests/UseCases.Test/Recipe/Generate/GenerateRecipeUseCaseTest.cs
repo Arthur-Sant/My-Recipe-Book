@@ -14,7 +14,7 @@ public class GenerateRecipeUseCaseTest
     [Fact]
     public async Task Success()
     {
-        var dto = GeneratedRecipeDTOBuilder.Build();
+        var dto = GeneratedRecipeDtoBuilder.Build();
 
         var body = RequestGenerateRecipeJsonBuilder.Build();
 
@@ -31,7 +31,7 @@ public class GenerateRecipeUseCaseTest
     [Fact]
     public async Task Error_Duplicated_Ingredients()
     {
-        var dto = GeneratedRecipeDTOBuilder.Build();
+        var dto = GeneratedRecipeDtoBuilder.Build();
 
         var request = RequestGenerateRecipeJsonBuilder.Build(count: 4);
         request.Ingredients.Add(request.Ingredients[0]);
@@ -47,7 +47,7 @@ public class GenerateRecipeUseCaseTest
           );
     }
 
-    private static GenerateRecipeUseCase CreateUseCase(GeneratedRecipeDTO dto)
+    private static GenerateRecipeUseCase CreateUseCase(GeneratedRecipeDto dto)
     {
         var generateRecipeAI = GenerateRecipeAIBuilder.Build(dto);
 
