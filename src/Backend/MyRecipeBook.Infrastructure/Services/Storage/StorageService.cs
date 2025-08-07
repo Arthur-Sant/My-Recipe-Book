@@ -50,7 +50,7 @@ public class StorageService(BlobServiceClient _blobServiceClient) : IStorageServ
                 BlobContainerName = containerName,
                 BlobName = fileName,
                 Resource = "b",
-                ExpiresOn = DateTimeOffset.UtcNow.AddMinutes(MyRecipeBookRuleConstants.MAXIMUM_IMAGE_URL_LIFETIMR_IN_MINUTES)
+                ExpiresOn = DateTimeOffset.UtcNow.AddMinutes(MyRecipeBookRuleConstants.MAXIMUM_IMAGE_URL_LIFETIME_IN_MINUTES)
             };
 
             sasBuilder.SetPermissions(BlobSasPermissions.Read);
