@@ -2,7 +2,7 @@
 
 namespace MyRecipeBook.Domain.Services.Mail.Templates;
 
-public class SendCodeResetPasswordTemplate : MailTemplate<SendCodeResetPasswordModel>
+public class SendCodeResetPasswordTemplate : IMailTemplate<SendCodeResetPasswordModel>
 {
-    public override string TemplatePath => "SendCodeResetPassword.html";
+    public string TemplatePath => "SendCodeResetPassword.html";
 }
