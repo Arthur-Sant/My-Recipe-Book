@@ -5,5 +5,5 @@ namespace MyRecipeBook.Domain.Services.Mail;
 
 public interface IMailService
 {
-    public Task Send<TModel>(MailMessage<TModel> email) where TModel : IMailModel;
+    public Task Send<TModel>(MailMessage<TModel> mailMessage) where TModel : IMailModel;
 }

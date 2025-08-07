@@ -1,6 +1,6 @@
 ﻿namespace MyRecipeBook.Infrastructure.Services.Mail.Helper;
 
-public class TemplateRenderer
+public static class TemplateRenderer
 {
     public async static Task<string> GetTemplateString(object model, string template)
     {
