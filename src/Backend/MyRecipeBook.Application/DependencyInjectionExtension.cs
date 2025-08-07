@@ -5,6 +5,8 @@ using MyRecipeBook.Application.Services.AutoMapper;
 using MyRecipeBook.Application.UseCases.Dashboard;
 using MyRecipeBook.Application.UseCases.Login.DoLogin;
 using MyRecipeBook.Application.UseCases.Login.External;
+using MyRecipeBook.Application.UseCases.Login.RequestCode;
+using MyRecipeBook.Application.UseCases.Login.ResetPassword;
 using MyRecipeBook.Application.UseCases.Recipe.Delete;
 using MyRecipeBook.Application.UseCases.Recipe.Filter;
 using MyRecipeBook.Application.UseCases.Recipe.Generate;
@@ -56,6 +58,8 @@ public static class DependencyInjectionExtension
     {
         services.AddScoped<IDoLoginUseCase, DoLoginUsecase>();
         services.AddScoped<IExternalLoginUseCase, ExternalLoginUseCase>();
+        services.AddScoped<IRequestCodeResetPasswordUseCase, RequestCodeResetPasswordUseCase>();
+        services.AddScoped<IResetPasswordUseCase, ResetPasswordUseCase>();
 
         services.AddScoped<IRegisterUseCase, RegisterUserUseCase>();
         services.AddScoped<IGetUserProfileUseCase, GetUserProfileUseCase>();

@@ -177,6 +177,9 @@
   <data name="INSTRUCTION_EXCEEDS_LIMIT_CHARACTERS" xml:space="preserve">
     <value>L'instruction dépasse la limite maximale de 2000 caractères.</value>
   </data>
+  <data name="INVALID_CODE" xml:space="preserve">
+    <value>Code invalide.</value>
+  </data>
   <data name="INVALID_NUMBER_INGREDIENTS" xml:space="preserve">
     <value>Nombre d'ingrédients invalide. La liste doit contenir entre 1 et 5 ingrédients.</value>
   </data>

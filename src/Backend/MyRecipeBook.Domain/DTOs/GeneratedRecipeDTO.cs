@@ -2,7 +2,7 @@
 
 namespace MyRecipeBook.Domain.DTOs;
 
-public class GeneratedRecipeDTO
+public record GeneratedRecipeDTO
 {
     public string Title { get; init; } = string.Empty;
     public IList<string> Ingredients { get; init; } = [];

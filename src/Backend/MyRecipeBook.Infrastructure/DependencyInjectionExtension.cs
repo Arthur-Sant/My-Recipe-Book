@@ -8,12 +8,15 @@ using Mscc.GenerativeAI;
 using MyRecipeBook.Domain.Enums;
 using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories;
+using MyRecipeBook.Domain.Repositories.CodeToPerformAction;
 using MyRecipeBook.Domain.Repositories.Recipe;
 using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Domain.Security.Cryptography;
 using MyRecipeBook.Domain.Security.Tokens;
 using MyRecipeBook.Domain.Services.AI;
 using MyRecipeBook.Domain.Services.LoggedUser;
+using MyRecipeBook.Domain.Services.Mail;
+using MyRecipeBook.Domain.Services.Mail.Schema;
 using MyRecipeBook.Domain.Services.ServiceBus;
 using MyRecipeBook.Domain.Services.Storage;
 using MyRecipeBook.Infrastructure.DataAccess;
@@ -23,6 +26,7 @@ using MyRecipeBook.Infrastructure.Security.Cryptography;
 using MyRecipeBook.Infrastructure.Security.Tokens.Acess.Generator;
 using MyRecipeBook.Infrastructure.Security.Tokens.Acess.Validator;
 using MyRecipeBook.Infrastructure.Services.LoggedUser;
+using MyRecipeBook.Infrastructure.Services.Mail;
 using MyRecipeBook.Infrastructure.Services.OpenAI;
 using MyRecipeBook.Infrastructure.Services.ServiceBus;
 using MyRecipeBook.Infrastructure.Services.Storage;
@@ -31,7 +35,6 @@ using System.Reflection;
 namespace MyRecipeBook.Infrastructure;
 public static class DependencyInjectionExtension
 {
-
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         AddRepositories(services);
@@ -41,6 +44,7 @@ public static class DependencyInjectionExtension
         AddAI(services, configuration);
         AddStorage(services, configuration);
         AddServiceBus(services, configuration);
+        AddMail(services, configuration);
 
         if(configuration.IsUnitTestEnviroment())
             return;
@@ -95,6 +99,10 @@ public static class DependencyInjectionExtension
         services.AddScoped<IRecipeReadOnlyRepository, RecipeRepository>();
         services.AddScoped<IRecipeDeleteOnlyRepository, RecipeRepository>();
         services.AddScoped<IRecipeUpdateOnlyRepository, RecipeRepository>();
+
+        services.AddScoped<ICodeToPerformActionReadOnlyRepository, CodeToPerformActionRepository>();
+        services.AddScoped<ICodeToPerformActionWriteOnlyRepository, CodeToPerformActionRepository>();
+        services.AddScoped<ICodeToPerformActionDeleteOnlyRepository, CodeToPerformActionRepository>();
     }
 
     private static void AddFluentMigrator_MySql(IServiceCollection services, IConfiguration configuration)
@@ -189,5 +197,10 @@ public static class DependencyInjectionExtension
         services.AddScoped<IDeleteUserQueue>(_ => deleteQueue);
     }
 
+    private static void AddMail(IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<MailSetting>(configuration.GetSection("Settings:Mail").Bind);
+        services.AddScoped<IMailService, MailService>();
+    }
 
 }
