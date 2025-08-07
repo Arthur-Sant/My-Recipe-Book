@@ -4,5 +4,5 @@ namespace MyRecipeBook.Domain.Services.AI;
 
 public interface IGenerateRecipeAI
 {
-    public Task<GeneratedRecipeDTO> Generate(IList<string> ingredients);
+    public Task<GeneratedRecipeDto> Generate(IList<string> ingredients);
 }

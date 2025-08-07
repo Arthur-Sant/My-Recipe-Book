@@ -9,7 +9,7 @@ namespace MyRecipeBook.Infrastructure.Services.OpenAI;
 
 public class AIService(IGenerativeAI _googleAi) : IGenerateRecipeAI
 {
-    public async Task<GeneratedRecipeDTO> Generate(IList<string> ingredients)
+    public async Task<GeneratedRecipeDto> Generate(IList<string> ingredients)
     {
         var model = _googleAi.GenerativeModel(model: Model.Gemma3n_E2B);
 
@@ -25,12 +25,12 @@ public class AIService(IGenerativeAI _googleAi) : IGenerateRecipeAI
 
         var step = 1;
 
-        return new GeneratedRecipeDTO
+        return new GeneratedRecipeDto
         {
             Title = responseList[0],
             CookingTime = (CookingTime)Enum.Parse(typeof(CookingTime), responseList[1].First().ToString()),
             Ingredients = responseList[2].Split(";"),
-            Instructions = responseList[3].Split("@").Select(instruction => new GeneratedInstructionDTO
+            Instructions = responseList[3].Split("@").Select(instruction => new GeneratedInstructionDto
             {
                 Text = instruction.Trim(),
                 Step = step++
