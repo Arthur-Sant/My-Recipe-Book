@@ -268,6 +268,15 @@ namespace MyRecipeBook.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid callback URL..
+        /// </summary>
+        public static string INVALID_URL {
+            get {
+                return ResourceManager.GetString("INVALID_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The name cannot be empty..
         /// </summary>
         public static string NAME_EMPTY {

@@ -8,6 +8,7 @@ using MyRecipeBook.Application.UseCases.Login.ResetPassword;
 using MyRecipeBook.Communication.Requests.Login;
 using MyRecipeBook.Communication.Responses.Error;
 using MyRecipeBook.Communication.Responses.User;
+using MyRecipeBook.Exceptions;
 using System.Security.Claims;
 
 
@@ -42,6 +43,11 @@ public class LoginController : MyRecipeBookBaseController
         }
         else
         {
+            var dominiosPermitidos = new[] { "/dashboard", "/perfil", "/app" };
+
+            if(!dominiosPermitidos.Any(url => returnUrl.ToLower().EndsWith(url)))
+                return BadRequest(ResourceMessagesException.INVALID_URL);
+
             var claims = authenticate.Principal!.Identities.First().Claims;
 
             var name = claims.First(c => c.Type == ClaimTypes.Name).Value;

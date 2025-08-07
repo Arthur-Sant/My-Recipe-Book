@@ -186,6 +186,9 @@
   <data name="INVALID_SESSION" xml:space="preserve">
     <value>Aucune session valide n'a été trouvée. Veuillez vous connecter pour accéder à cette fonctionnalité.</value>
   </data>
+  <data name="INVALID_URL" xml:space="preserve">
+    <value>URL de rappel non valide.</value>
+  </data>
   <data name="NAME_EMPTY" xml:space="preserve">
     <value>Le nom ne peut pas être vide.</value>
   </data>
