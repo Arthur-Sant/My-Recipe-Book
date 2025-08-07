@@ -241,6 +241,15 @@ namespace MyRecipeBook.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid code..
+        /// </summary>
+        public static string INVALID_CODE {
+            get {
+                return ResourceManager.GetString("INVALID_CODE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid number of ingredients. The list must contain between 1 and 5 ingredients..
         /// </summary>
         public static string INVALID_NUMBER_INGREDIENTS {
