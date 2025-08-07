@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
 using MyRecipeBook.Application.UseCases.Login.DoLogin;
 using MyRecipeBook.Application.UseCases.Login.External;
+using MyRecipeBook.Application.UseCases.Login.RequestCode;
+using MyRecipeBook.Application.UseCases.Login.ResetPassword;
 using MyRecipeBook.Communication.Requests.Login;
 using MyRecipeBook.Communication.Responses.Error;
 using MyRecipeBook.Communication.Responses.User;
@@ -49,5 +51,30 @@ public class LoginController : MyRecipeBookBaseController
 
             return Redirect($"{returnUrl}/{token}");
         }
+    }
+
+    [HttpGet("code-reset-password/{email}")]
+    [ProducesResponseType(StatusCodes.Status202Accepted)]
+    public async Task<IActionResult> RequestCodeResetPassword(
+        [FromServices] IRequestCodeResetPasswordUseCase useCase,
+        [FromRoute] string email
+        )
+    {
+        await useCase.Execute(email);
+
+        return Accepted();
+    }
+
+    [HttpPut("reset-password")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(ResponseErrorJson),StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ResetPassword(
+        [FromServices] IResetPasswordUseCase useCase, 
+        [FromBody] RequestResetPasswordJson body
+        )
+    {
+        await useCase.Execute(body);
+
+        return NoContent();
     }
 }
