@@ -17,7 +17,7 @@ public class AIService(IGenerativeAI _googleAi) : IGenerateRecipeAI
 
         var response = await model.GenerateContent(prompt: input);
 
-        var responseList = response.Text
+        var responseList = response.Text!
           .Split("\n")
           .Where(response => response.Trim().Equals(string.Empty).IsFalse())
           .Select(item => item.Replace("[", "").Replace("]", ""))

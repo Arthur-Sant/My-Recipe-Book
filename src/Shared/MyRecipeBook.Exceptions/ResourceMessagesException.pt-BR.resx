@@ -186,6 +186,9 @@
   <data name="INVALID_SESSION" xml:space="preserve">
     <value>Não encontramos uma sessão válida. Faça login para acessar este recurso.</value>
   </data>
+  <data name="INVALID_URL" xml:space="preserve">
+    <value>URL de retorno inválida.</value>
+  </data>
   <data name="NAME_EMPTY" xml:space="preserve">
     <value>O nome não pode estar vazio.</value>
   </data>

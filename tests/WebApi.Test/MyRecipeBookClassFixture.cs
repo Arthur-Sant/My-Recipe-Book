@@ -101,7 +101,7 @@ public class MyRecipeBookClassFixture : IClassFixture<CustomWebApplicationFactor
         _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
     }
 
-    private void AddListToMultipartContent(
+    private static void AddListToMultipartContent(
         MultipartFormDataContent multipartContent, 
         string propertyName, 
         IList list

@@ -6,6 +6,8 @@ using MyRecipeBook.Domain.Services.Mail;
 using MyRecipeBook.Domain.Services.Mail.Models;
 using MyRecipeBook.Domain.Services.Mail.Schema;
 using MyRecipeBook.Domain.Services.Mail.Templates;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace MyRecipeBook.Application.UseCases.Login.RequestCode;
 
@@ -53,18 +55,34 @@ public class RequestCodeResetPasswordUseCase(
 
     private async Task<string> GenerateCode()
     {
-        var random = new Random();
-        string sixDigitCode;
+        string code;
         bool existCode;
 
         do
         {
-            sixDigitCode = random.Next(100000, 999999).ToString();
-            existCode = await _repositoryRead.ExistCode(sixDigitCode);
+            code = GenerateSecureCode(6);
+            existCode = await _repositoryRead.ExistCode(code);
         }
-        while(existCode); // repete se já existe
+        while(existCode);
 
-        return sixDigitCode;
+        return code;
+    }
 
+    private static string GenerateSecureCode(int length)
+    {
+        using var rng = RandomNumberGenerator.Create();
+
+        var codeBuilder = new StringBuilder(length);
+
+        byte[] buffer = new byte[1];
+
+        while(codeBuilder.Length < length)
+        {
+            rng.GetBytes(buffer);
+            int digit = buffer[0] % 10;
+            codeBuilder.Append(digit);
+        }
+
+        return codeBuilder.ToString();
     }
 }

@@ -20,8 +20,7 @@ public class ExternalLoginUseCase(
             user = new Domain.Entities.User
             {
                 Name = name,
-                Email = email,
-                Password = "-"
+                Email = email
             };
 
             await _repositoryWrite.Add(user);
