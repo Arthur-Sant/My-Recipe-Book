@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using MyRecipeBook.Communication.Requests.User;
-using MyRecipeBook.Communication.Responses;
+using MyRecipeBook.Communication.Responses.Token;
 using MyRecipeBook.Communication.Responses.User;
+using MyRecipeBook.Domain.Entities;
 using MyRecipeBook.Domain.Extensions;
 using MyRecipeBook.Domain.Repositories;
+using MyRecipeBook.Domain.Repositories.Token;
 using MyRecipeBook.Domain.Repositories.User;
 using MyRecipeBook.Domain.Security.Cryptography;
 using MyRecipeBook.Domain.Security.Tokens;
@@ -15,10 +17,12 @@ namespace MyRecipeBook.Application.UseCases.User.Register;
 public class RegisterUserUseCase(
     IUserWriteOnlyRepository _writeonlyRepository,
     IUserReadOnlyRepository _readonlyRepository,
+    ITokenWriteOnlyRepository _tokenWriteRepository,
     IMapper _mapper,
     IPasswordEncripter _passwordEncripter,
     IUnityOfWork _unityOfWork,
-    IAccessTokenGenerator _acessTokenGenerator
+    IAccessTokenGenerator _acessTokenGenerator,
+    IRefreshTokenGenerator _refreshTokenGenerator
         ) : IRegisterUseCase
 {
     public async Task<ResponseRegisterUserJson> Execute(RequestRegisterUserJson body)
@@ -33,14 +37,32 @@ public class RegisterUserUseCase(
 
         await _unityOfWork.Commit();
 
+        var refreshToken = await CreateAndSaveRefreshToken(user);
+
         return new ResponseRegisterUserJson
         {
             Name = user.Name,
             Tokens = new ResponseTokensJson
             {
-                AccessToken = _acessTokenGenerator.Generate(user.UserIdentifier)
+                AccessToken = _acessTokenGenerator.Generate(user.UserIdentifier),
+                RefreshToken = refreshToken
             }
         };
+    }
+
+    private async Task<string> CreateAndSaveRefreshToken(Domain.Entities.User user)
+    {
+        var refreshToken = _refreshTokenGenerator.Generate();
+
+        await _tokenWriteRepository.Register(new Domain.Entities.Token
+        {
+            Value = refreshToken,
+            UserId = user.Id
+        });
+
+        await _unityOfWork.Commit();
+
+        return refreshToken;
     }
 
     private async Task Validate(RequestRegisterUserJson body)
