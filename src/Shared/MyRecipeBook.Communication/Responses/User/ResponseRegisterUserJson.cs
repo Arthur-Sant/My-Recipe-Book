@@ -1,4 +1,6 @@
-﻿namespace MyRecipeBook.Communication.Responses.User;
+﻿using MyRecipeBook.Communication.Responses.Token;
+
+namespace MyRecipeBook.Communication.Responses.User;
 
 public class ResponseRegisterUserJson
 {
