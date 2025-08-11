@@ -57,15 +57,21 @@ public class DoLoginUseCaseTest
     {
         var passwordEncripter = PasswordEncrypterBuilder.Build();
         var userReadRepositoryBuilder = new UserReadOnlyRepositoryBuilder();
+        var tokenWriteRepositoryBuilder = TokenWriteOnlyRepositoryBuilder.Build();
         var accessTokenGenerator = JwtTokenGeneratorBuilder.Build();
+        var refreshTokenGenerator = RefreshTokenGeneratorBuilder.Build();
+        var unitOfWork = UnitOfWorkBuilder.Build();
 
         if(user is not null)
-            userReadRepositoryBuilder.GetByEmailAndPassword(user);
+            userReadRepositoryBuilder.GetByEmail(user);
 
         return new DoLoginUsecase(
             userReadRepositoryBuilder.Build(), 
+            tokenWriteRepositoryBuilder,
+            unitOfWork,
             passwordEncripter,
-            accessTokenGenerator
-            );
+            accessTokenGenerator,
+            refreshTokenGenerator
+        );
     }
 }

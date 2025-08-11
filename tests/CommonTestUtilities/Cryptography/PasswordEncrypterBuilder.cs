@@ -5,5 +5,5 @@ namespace CommonTestUtilities.Cryptography;
 
 public class PasswordEncrypterBuilder
 {
-    public static IPasswordEncripter Build() => new Sha512Encripter("abc1234");
+    public static IPasswordEncripter Build() => new PasswordEncripter();
 }

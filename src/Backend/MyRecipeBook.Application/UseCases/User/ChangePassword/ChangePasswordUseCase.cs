@@ -34,9 +34,7 @@ public class ChangePasswordUseCase(
     {
         var result = new ChangePasswordValidator().Validate(body);
 
-        var currentPasswordEncripted = _passwordEncripter.Encrypt(body.Password);
-
-        if(currentPasswordEncripted.Equals(loggedUser.Password).IsFalse())
+        if(_passwordEncripter.IsValid(body.Password, loggedUser.Password).IsFalse())
             result.Errors.Add(new FluentValidation.Results.ValidationFailure(string.Empty, ResourceMessagesException.CURRENT_PASSWORD_INCORRECT));
 
         if(result.IsValid.IsFalse())
