@@ -15,7 +15,7 @@ public static class TemplateRenderer
 
         foreach(var prop in model.GetType().GetProperties())
         {
-            var placeholder = $"{{{{{prop.Name}}}}}";
+            var placeholder = $"{{{prop.Name}}}";
             var value = prop.GetValue(model)?.ToString() ?? string.Empty;
             html = html.Replace(placeholder, value);
         }
