@@ -4,7 +4,7 @@ using MyRecipeBook.Communication.Requests.Token;
 using MyRecipeBook.Communication.Responses.Token;
 
 namespace MyRecipeBook.API.Controllers;
-public class TokenController : Controller
+public class TokenController : MyRecipeBookBaseController
 {
     [HttpPost("refresh-token")]
     [ProducesResponseType(typeof(ResponseTokensJson), StatusCodes.Status200OK)]
