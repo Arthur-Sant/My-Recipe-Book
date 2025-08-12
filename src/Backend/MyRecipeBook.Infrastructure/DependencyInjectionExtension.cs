@@ -40,7 +40,7 @@ public static class DependencyInjectionExtension
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         AddRepositories(services);
-        AddPasswordEncrypter(services, configuration);
+        AddPasswordEncrypter(services);
         AddLoggedUser(services);
         AddTokens(services, configuration);
         AddAI(services, configuration);
@@ -153,7 +153,7 @@ public static class DependencyInjectionExtension
         services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
     }
 
-    private static void AddPasswordEncrypter(IServiceCollection services, IConfiguration configuration)
+    private static void AddPasswordEncrypter(IServiceCollection services)
     {
         services.AddScoped<IPasswordEncripter, PasswordEncripter>();
     }
