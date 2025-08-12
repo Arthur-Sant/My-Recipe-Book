@@ -1,0 +1,24 @@
+trigger:
+- main
+
+variables:
+  dockerRegistryServiceConnection: '164c9a6a-97f2-430f-ab08-a47c00221514'
+  imageRepository: 'apimyrecipebook'
+  containerRegistry: 'apimyrecipebooks.azurecr.io'
+  dockerfilePath: 'Dockerfile'
+  tag: '$(Build.BuildId)'
+
+pool:
+      vmImage: 'ubuntu-latest'
+
+steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          latest
+          $(tag)
