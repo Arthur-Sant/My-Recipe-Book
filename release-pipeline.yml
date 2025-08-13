@@ -20,7 +20,7 @@ steps:
     secureFile: 'appsettings.Production.json'
 
 - script: |
-    cp $(appsettings.secureFilePath) src/Backend/MyRecipeBook.Api
+    cp $(appsettings.secureFilePath) Backend/MyRecipeBook.Api
 
 - task: Docker@2
   displayName: Build and push an image to container registry
