@@ -171,6 +171,7 @@ node_modules/
 Generated_Code/
 
 src/Backend/MyRecipeBook.API/appsettings.Development.json
+src/Backend/MyRecipeBook.API/appsettings.Production.json
 
 # Backup & report files from converting an old project file to a newer
 # Visual Studio version. Backup files are not needed, because we have git ;-)
